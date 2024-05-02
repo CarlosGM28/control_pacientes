@@ -3,8 +3,6 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, s
 from datetime import datetime
 import pyrebase
 
-
-
 app = Flask(__name__)
 
 # Configurar la clave secreta de sesión
