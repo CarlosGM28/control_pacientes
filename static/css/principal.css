@@ -1,0 +1,82 @@
+/* Estilos CSS adicionales */
+.input-container {
+    position: relative;
+    margin-bottom: 1em;
+}
+
+.custom-input {
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.custom-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 0 5px; /* Espacio extra para el texto del placeholder */
+    background-color: #2c3e50; /* Fondo oscuro */
+    color: #aaa;
+    transition: top 0.3s, font-size 0.3s, background-color 0.3s; /* Animación de transición */
+    pointer-events: none;
+}
+
+.custom-input:focus + .custom-label,
+.custom-input:not(:placeholder-shown) + .custom-label {
+    top: -10px;
+    font-size: 13px;
+    background-color: #2c3e50; /* Fondo oscuro */
+    color: #3498db; /* Color azul */
+}
+
+/* Estilos personalizados para la tabla de pacientes */
+/* Estilo de la tabla */
+.table-container {
+    margin-top: 20px;
+    overflow-y: auto; /* Añadido para permitir desplazamiento horizontal */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-scroll {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 78vh; /* Establece la altura máxima deseada */
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #34495e;
+    white-space: nowrap; /* Evitar que el texto se divida en varias líneas */
+    overflow: hidden; /* Ocultar el contenido que desborda */
+    text-overflow: ellipsis; /* Mostrar puntos suspensivos (...) cuando el contenido desborda */
+}
+
+.table th {
+    background-color: #34495e;
+    color: #ecf0f1;
+    font-weight: bold;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #ebebeb;
+}
+
+/* Estilo de las acciones */
+.table .acciones button {
+    margin-right: 5px;
+    padding: 6px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.table .acciones button:hover {
+    background-color: #3498db;
+    color: #fff;
+}

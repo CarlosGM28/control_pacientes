@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Vincula tu archivo CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body style="background-image: 
+                url('../static/storage/login_1.jpg'),
+                url('../static/storage/login_2.jpg'),
+                url('../static/storage/login_3.jpg');">
+    <div class="container-fluid vh-100">
+        <div class="row align-items-center justify-content-center" style="height: 100%;">
+            <div class="col-lg-3 position-relative" style="z-index: 1;">
+                <div class="card border-0 rounded-3 position-relative" style="background-color: rgba(255, 255, 255, 0.8);">
+                    <div class="card-body">
+                        <h1 class="card-title text-center mb-4">Iniciar Sesión</h1>
+                        <form action="/login" method="POST" style="width: 90%; margin-left: 5%;" class="text-center">
+                            <div class="mb-3 position-relative">
+                                <input type="text" id="correo" name="correo" class="form-control" required placeholder="Email">
+                            </div>
+                            <div class="mb-3 position-relative">
+                                <input type="password" class="form-control" id="password" name="password" required placeholder="Contraseña">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Ingresar</button>
+                            <br>
+                            <br>
+                            <div class="mb-3 form-check" style="text-align: left !important;">
+                                <input class="form-check-input" type="checkbox" id="showPassword">
+                                <label class="form-check-label" for="showPassword">Mostrar contraseña</label>
+                            </div>                   
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Vincula tu archivo JS -->
+    <script src="{{ url_for('static', filename='js/img_body.js') }}"></script>
+</body>
+</html>

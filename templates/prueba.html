@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta DNI o RUC</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Consulta DNI o RUC</h1>
+    <form id="consultaForm">
+        <label for="numero">Número:</label>
+        <input type="text" id="numero" name="numero" required><br><br>
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo">
+            <option value="dni">DNI</option>
+            <option value="ruc">RUC</option>
+        </select><br><br>
+        <button type="submit">Consultar</button>
+    </form>
+    <div id="resultado"></div>
+
+    <script>
+        $(document).ready(function() {
+            $("#consultaForm").submit(function(event) {
+                event.preventDefault(); // Evitar el envío del formulario por defecto
+
+                var numero = $("#numero").val();
+                var tipo = $("#tipo").val();
+                var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImNlZ21jYXJsb3M5ODdAZ21haWwuY29tIn0.CDsp43On-Y7Z-EDkCsFkVkWjCmkArqZyEwTOtVL2MQg";
+                var url;
+
+                if (tipo === "dni") {
+                    url = `https://dniruc.apisperu.com/api/v1/dni/${numero}?token=${token}`;
+                } else if (tipo === "ruc") {
+                    url = `https://dniruc.apisperu.com/api/v1/ruc/${numero}?token=${token}`;
+                }
+
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function(data) {
+                        // Mostrar los datos en el HTML
+                        var resultadoHTML = "";
+                        if (tipo === "dni") {
+                            resultadoHTML += `
+                                <p>Nombres: ${data.nombres}</p>
+                                <p>Apellido Paterno: ${data.apellidoPaterno}</p>
+                                <p>Apellido Materno: ${data.apellidoMaterno}</p>
+                                <p>DNI: ${data.dni}</p>
+                                <p>Código de Verificación: ${data.codVerifica}</p>
+                                <p>Éxito: ${data.success}</p>
+                            `;
+                        } else if (tipo === "ruc") {
+                            resultadoHTML += `
+                                <p>RUC: ${data.ruc}</p>
+                                <p>Razón Social: ${data.razonSocial}</p>
+                                <p>Estado: ${data.estado}</p>
+                                <p>Condición: ${data.condicion}</p>
+                                <p>Dirección: ${data.direccion}</p>
+                                <p>Departamento: ${data.departamento}</p>
+                                <p>Provincia: ${data.provincia}</p>
+                                <p>Distrito: ${data.distrito}</p>
+                                <p>Ubigeo: ${data.ubigeo}</p>
+                                <p>Capital: ${data.capital}</p>
+                            `;
+                        }
+                        $("#resultado").html(resultadoHTML);
+                    },
+                    error: function(xhr, status, error) {
+                        // Manejar el error si la solicitud falla
+                        console.error("Error al realizar la solicitud:", error);
+                        $("#resultado").html("<p>Error al realizar la solicitud.</p>");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

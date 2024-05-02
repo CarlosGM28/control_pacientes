@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Personal Médico-Hospital</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/personal.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav id="encabezado" class="navbar navbar-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1"><i class="fas fa-hospital"></i> Hospital XYZ</span>
+            <span class="navbar-text">Usuario: {{ user_email }}</span>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Barra de navegación lateral -->
+            <div class="col-lg-2 col-md-3 col-sm-4 col-6" id="navegador">
+                <ul class="list-unstyled">
+                    <li class="show"><a href="/principal" class="text-decoration-none"><i class="fas fa-user"></i> Pacientes</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none"><i class="far fa-calendar-alt"></i> Citas</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-chart-bar"></i> Informes</a></li>
+                    <li class="show"><a href="/registro_reniec" class="text-decoration-none"><i class="fas fa-search"></i> Busqueda Reniec</a></li>
+                    <li class="show"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i> Personal Médico</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-cog"></i> Configuración</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                </ul>
+            </div>  
+
+            <!-- Contenido principal -->
+            <div class="col-lg-10 col-md-9 col-sm-8" id="contenido">
+                <!-- Navbar dentro del contenido -->
+                <nav id="encabezado" class="navbar navbar-dark bg-dark">
+                    <div class="container-fluid">
+                        <div class="input-group">
+                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modal_personal">Registrar Personal Médico</button>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Modal para registrar personal médico -->
+                <div class="modal fade" id="modal_personal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="exampleModalLabel">Registro Personal Médico</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>               
+                            <form id="registro_form" action="/registrar_personal" method="POST">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-container">
+                                                <input type="text" id="nombre" name="nombre" class="form-control custom-input" required pattern="[A-Za-z\s]+" title="El nombre debe contener solo letras y espacios">
+                                                <label for="nombre" class="custom-label">Nombre Completo</label>
+                                            </div>
+                                            <div class="input-container">
+                                                <input type="text" id="dni" name="dni" class="form-control custom-input" required pattern="[0-9]{8}" title="El DNI debe contener solo 8 números">
+                                                <label for="dni" class="custom-label">DNI</label>
+                                            </div>
+                                            <div class="input-container">
+                                                <select id="genero" name="genero" class="form-select form-select-lg custom-input" required>
+                                                    <option value=""></option>
+                                                    <option value="masculino">Masculino</option>
+                                                    <option value="femenino">Femenino</option>
+                                                    <option value="otro">Otro</option>
+                                                </select>
+                                                <label for="genero" class="custom-label">Género</label>
+                                            </div>
+                                            <div class="input-container">
+                                                <input type="email" id="email" name="email" class="form-control custom-input" required title="Ingrese un correo electrónico válido">
+                                                <label for="correo" class="custom-label">Correo Electrónico</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-container">
+                                                <input type="tel" id="telefono" name="telefono" class="form-control custom-input" required pattern="[0-9]{1,9}" title="El teléfono debe contener solo números y tener máximo 9 caracteres" maxlength="9">
+                                                <label for="telefono" class="custom-label">Teléfono</label>
+                                            </div>
+                                            <div class="input-container">
+                                                <input type="text" id="especialidad" name="especialidad" class="form-control custom-input" required title="Ingrese una especialidad válida">
+                                                <label for="especialidad" class="custom-label">Especialidad</label>
+                                            </div>
+                                            <div class="input-container">
+                                                <select id="rol" name="rol" class="form-select form-select-lg custom-input" required>
+                                                    <option value=""></option>
+                                                    <option value="administrador">Administrador</option>
+                                                    <option value="medico">Médico</option>
+                                                    <option value="enfermera">Enfermera/o</option>
+                                                    <option value="recepcionista">Recepcionista</option>
+                                                </select>
+                                                <label for="rol" class="custom-label">Rol</label>
+                                            </div>
+                                            <div class="input-container">
+                                                <input type="password" id="password" name="password" class="form-control custom-input" required title="Ingrese una contraseña válida">
+                                                <label for="password" class="custom-label">Contraseña</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Registrar</button>
+                                </div>
+                            </form>                                                
+                        </div>
+                    </div>
+                </div>
+                {% if tipo_alerta %}
+                <div id="alerta" class="alert alert-{{ tipo_alerta }} alert-dismissible fade show position-fixed bottom-0 end-0" role="alert" style="width: 17%;">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>{{ mensaje_alerta }}</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+                <script>
+                    // Ocultar la alerta después de 5 segundos
+                    setTimeout(function() {
+                        var alerta = document.getElementById('alerta');
+                        alerta.classList.remove('show');
+                    }, 5000);
+                </script>
+                {% endif %}
+
+                <!-- Tabla -->
+                <div class="table-container">
+                    <div class="table-responsive">
+                        <div class="table-scroll">
+                            <table id="data_table" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre completo</th>
+                                        <th>DNI</th>
+                                        <th>Correo electrónico</th>
+                                        <th>Telefono</th>
+                                        <th>Especialidad</th>
+                                        <th>Rol</th>
+                                        <th>Registro</th>
+                                        <th>Genero</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Datos de la tabla -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- Script personalizado -->
+    <script src="{{ url_for('static', filename='js/personal.js') }}"></script>
+</body>
+</html>
