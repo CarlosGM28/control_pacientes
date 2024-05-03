@@ -1,0 +1,4 @@
+pip install flask
+pip install requests
+pip install pycryptodome==3.10.1
+pip install pyrebase4

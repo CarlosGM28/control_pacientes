@@ -80,3 +80,41 @@
     background-color: #3498db;
     color: #fff;
 }
+
+/* Estilos personalizados para el modal */
+.modal-content {
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background-color: #3498db;
+    border-bottom: none;
+    padding: 20px;
+}
+
+.modal-title {
+    color: #333;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* Ajustar el tamaño de los detalles según tus necesidades */
+.modal-body p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+/* Botón de cerrar */
+.btn-close {
+    color: #000;
+}
+
+/* Estilo del botón para cerrar el modal */
+.btn-close:focus,
+.btn-close:hover {
+    color: #333; /* Cambia el color al pasar el ratón */
+    text-decoration: none; /* Evita que el cursor se convierta en un puntero */
+}

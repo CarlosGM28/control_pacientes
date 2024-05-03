@@ -19,7 +19,9 @@
     <nav id="encabezado" class="navbar navbar-dark">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1"><i class="fas fa-hospital"></i> Hospital XYZ</span>
-            <span class="navbar-text">Usuario: {{ user_email }}</span>
+            <span class="navbar-text" style="color: white; font-size: 17px; font-weight: bold; text-transform: uppercase;">
+                <i class="fas fa-user-circle" style="margin-right: 5px; font-size: 24px;"></i>{{ user_email }}
+            </span>                                             
         </div>
     </nav>    
 
@@ -62,7 +64,17 @@
                                         <th>Género</th>
                                         <th>Nacimiento</th>
                                         <th>Registro</th>
+                                        <th>imc</th>
                                         <th>Acciones</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -232,6 +244,156 @@
         </div>
     </div>
 
+<!-- Modal para mostrar detalles del paciente -->
+<div class="modal fade slide-up" id="detallesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Se agrega la clase 'modal-lg' para hacer el modal más grande -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detalles del paciente</h5>
+                <!-- Botón de cerrar -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Información Personal</h4>
+                            <p><strong>Nombre:</strong> <span id="nombrePaciente"></span></p>
+                            <p><strong>DNI:</strong> <span id="dniPaciente"></span></p>
+                            <p><strong>Correo:</strong> <span id="correoPaciente"></span></p>
+                            <p><strong>Dirección:</strong> <span id="direccionPaciente"></span></p>
+                            <p><strong>Teléfono:</strong> <span id="telefonoPaciente"></span></p>
+                            <p><strong>Género:</strong> <span id="generoPaciente"></span></p>
+                            <p><strong>Fecha de nacimiento:</strong> <span id="fechaNacimientoPaciente"></span></p>
+                            <p><strong>Hora de registro:</strong> <span id="horaRegistroPaciente"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Información Médica</h4>
+                            <p><strong>Consulta médica:</strong> <span id="consultaMedicaPaciente"></span></p>
+                            <p><strong>Especialista:</strong> <span id="especialistaPaciente"></span></p>
+                            <p><strong>Frecuencia cardíaca:</strong> <span id="frecuenciaCardiacaPaciente"></span></p>
+                            <p><strong>Frecuencia respiratoria:</strong> <span id="frecuenciaRespiratoriaPaciente"></span></p>
+                            <p><strong>IMC:</strong> <span id="imcPaciente"></span></p>
+                            <p><strong>Peso:</strong> <span id="pesoPaciente"></span></p>
+                            <p><strong>Presión arterial:</strong> <span id="presionArterialPaciente"></span></p>
+                            <p><strong>Saturación:</strong> <span id="saturacionPaciente"></span></p>
+                            <p><strong>Talla:</strong> <span id="tallaPaciente"></span></p>
+                            <p><strong>Temperatura:</strong> <span id="temperaturaPaciente"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar detalles del paciente -->
+<div class="modal fade slide-up" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar detalles del paciente</h5>
+                <!-- Botón de cerrar -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Información Personal</h6>
+                                <div class="mb-3">
+                                    <label for="nombreEdit" class="form-label">Nombre:</label>
+                                    <input type="text" class="form-control" id="nombreEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dniEdit" class="form-label">DNI:</label>
+                                    <input type="text" class="form-control" id="dniEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="correoEdit" class="form-label">Correo:</label>
+                                    <input type="email" class="form-control" id="correoEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="direccionEdit" class="form-label">Dirección:</label>
+                                    <input type="text" class="form-control" id="direccionEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="telefonoEdit" class="form-label">Teléfono:</label>
+                                    <input type="tel" class="form-control" id="telefonoEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="generoEdit" class="form-label">Género:</label>
+                                    <select class="form-select" id="generoEdit">
+                                        <option value="masculino">Masculino</option>
+                                        <option value="femenino">Femenino</option>
+                                        <!-- Agregar más opciones si es necesario -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fechaNacimientoEdit" class="form-label">Fecha de nacimiento:</label>
+                                    <input type="date" class="form-control" id="fechaNacimientoEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="horaRegistroEdit" class="form-label">Hora de registro:</label>
+                                    <input type="text" class="form-control" id="horaRegistroEdit" disabled>
+                                    <!-- Este campo será de solo lectura y se llenará automáticamente -->
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Información Médica</h6>
+                                <div class="mb-3">
+                                    <label for="consultaMedicaEdit" class="form-label">Consulta médica:</label>
+                                    <input type="text" class="form-control" id="consultaMedicaEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="especialistaEdit" class="form-label">Especialista:</label>
+                                    <input type="text" class="form-control" id="especialistaEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="frecuenciaCardiacaEdit" class="form-label">Frecuencia cardíaca:</label>
+                                    <input type="number" class="form-control" id="frecuenciaCardiacaEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="frecuenciaRespiratoriaEdit" class="form-label">Frecuencia respiratoria:</label>
+                                    <input type="number" class="form-control" id="frecuenciaRespiratoriaEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="imcEdit" class="form-label">IMC:</label>
+                                    <input type="number" class="form-control" id="imcEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pesoEdit" class="form-label">Peso:</label>
+                                    <input type="number" class="form-control" id="pesoEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="presionArterialEdit" class="form-label">Presión arterial:</label>
+                                    <input type="number" class="form-control" id="presionArterialEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="saturacionEdit" class="form-label">Saturación:</label>
+                                    <input type="number" class="form-control" id="saturacionEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tallaEdit" class="form-label">Talla:</label>
+                                    <input type="number" class="form-control" id="tallaEdit">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="temperaturaEdit" class="form-label">Temperatura:</label>
+                                    <input type="number" class="form-control" id="temperaturaEdit">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Bootstrap JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
