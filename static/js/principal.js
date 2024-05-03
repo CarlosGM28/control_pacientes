@@ -26,6 +26,15 @@ $(document).ready(function() {
                     { data: 'genero' },
                     { data: 'fecha_nacimiento' },
                     { data: 'hora_registro' },
+                    {
+                        // Columna de botones
+                        data: null,
+                        render: function(data, type, row) {
+                            return '<button class="btn btn-info ver-detalles" style="margin-right: 5px;"><i class="fas fa-eye"></i></button>' +
+                                '<button class="btn btn-warning editar" style="margin-right: 5px;"><i class="fas fa-pencil-alt"></i></button>' +
+                                '<button class="btn btn-danger eliminar" style="margin-right: 5px;"><i class="fas fa-trash-alt"></i></button>';
+                        }
+                    },
                     { data: 'consulta_medica', visible: false }, 
                     { data: 'especialista', visible: false }, 
                     { data: 'frecuencia_cardiaca', visible: false }, 
@@ -35,16 +44,7 @@ $(document).ready(function() {
                     { data: 'presion_arterial', visible: false }, 
                     { data: 'saturacion', visible: false }, 
                     { data: 'talla', visible: false }, 
-                    { data: 'temperatura', visible: false },
-                    {
-                        // Columna de botones
-                        data: null,
-                        render: function(data, type, row) {
-                            return '<button class="btn btn-info ver-detalles" style="margin-right: 5px;"><i class="fas fa-eye"></i></button>' +
-                                '<button class="btn btn-warning editar" style="margin-right: 5px;"><i class="fas fa-pencil-alt"></i></button>' +
-                                '<button class="btn btn-danger eliminar" style="margin-right: 5px;"><i class="fas fa-trash-alt"></i></button>';
-                        }
-                    }
+                    { data: 'temperatura', visible: false }
                 ],
                 columnDefs: [
                     {
