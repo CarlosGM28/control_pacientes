@@ -114,8 +114,10 @@ $(document).ready(function() {
 
             $('#data_table tbody').on('click', '.eliminar', function() {
                 var data = $('#data_table').DataTable().row($(this).parents('tr')).data();
-                // Lógica para eliminar
-                console.log('Eliminar paciente:', data);
+                    $('#dniDelete').val(data.dni);
+                    $('#horaRegistroDelete').val(data.hora_registro);
+                    // Mostrar el modal para editar los datos
+                    $('#confirmarEliminarModal').modal('show');
             });
         }
     });
@@ -173,4 +175,8 @@ inputsAndTextareasAndSelectAndDate.forEach(element => {
             }
         }
     });
+});
+
+$('#detallesModal').on('shown.bs.modal', function () {
+    $(this).find('.modal-dialog').addClass('animate__slideInUp');
 });

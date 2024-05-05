@@ -186,6 +186,121 @@ def regis_paciente():
     # Devolver los datos de los pacientes como JSON
     return jsonify({"datos":datos_pacientes})
 
+@app.route('/editar_paciente', methods=['POST'])
+def editar_paciente():
+    tipo_alerta = 'success'
+    mensaje_alerta = 'Paciente editado correctamente'
+    tipo_registro = 'paciente'
+    if request.method == 'POST':
+        # Obtener los datos del formulario de edición
+        dni = request.form['dniEdit']
+        hora_registro = request.form['horaRegistroEdit']
+
+        # Realizar una consulta en la base de datos utilizando el DNI
+        paciente_data = db.child("Pacientes").child(dni).get().val()
+
+        if paciente_data:
+            # Obtener la clave autogenerada del registro que se va a editar
+            registro_key = None
+            for key, paciente in paciente_data.items():
+                if paciente.get("hora_registro") == hora_registro:
+                    registro_key = key
+                    break
+
+            if registro_key:
+                # Obtener los demás datos del formulario
+                nombre = request.form['nombreEdit']
+                fecha_nacimiento = request.form['fechaNacimientoEdit']
+                genero = request.form['generoEdit']
+                correo = request.form['correoEdit']
+                telefono = request.form['telefonoEdit']
+                direccion = request.form['direccionEdit']
+                consulta_medica = request.form['consultaMedicaEdit']
+                especialista = request.form['especialistaEdit']
+                presion_arterial = request.form['presionArterialEdit']
+                saturacion = request.form['saturacionEdit']
+                temperatura = request.form['temperaturaEdit']
+                peso = request.form['pesoEdit']
+                frecuencia_respiratoria = request.form['frecuenciaRespiratoriaEdit']
+                talla = request.form['tallaEdit']
+                frecuencia_cardiaca = request.form['frecuenciaCardiacaEdit']
+                imc = request.form['imcEdit']
+                hora_registro = request.form['horaRegistroEdit']
+
+                # Crear un diccionario con los datos actualizados
+                datos_actualizados = {
+                    "nombre": nombre,
+                    "fecha_nacimiento": fecha_nacimiento,
+                    "genero": genero,
+                    "correo": correo,
+                    "telefono": telefono,
+                    "direccion": direccion,
+                    "consulta_medica": consulta_medica,
+                    "especialista": especialista,
+                    "presion_arterial": presion_arterial,
+                    "saturacion": saturacion,
+                    "temperatura": temperatura,
+                    "peso": peso,
+                    "frecuencia_respiratoria": frecuencia_respiratoria,
+                    "talla": talla,
+                    "frecuencia_cardiaca": frecuencia_cardiaca,
+                    "imc": imc,
+                    "hora_registro": hora_registro
+                }
+
+                # Actualizar los datos en Firebase utilizando la clave autogenerada
+                db.child("Pacientes").child(dni).child(registro_key).update(datos_actualizados)
+
+                # Devolver una respuesta JSON indicando el éxito de la operación
+                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
+            else:
+                tipo_alerta = 'danger'
+                mensaje_alerta = 'Error al editar al paciente'
+                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
+
+
+@app.route('/eliminar_paciente', methods=['POST'])
+def eliminar_paciente():
+    tipo_alerta = 'success'
+    mensaje_alerta = 'Paciente eliminado correctamente'
+    tipo_registro = 'paciente'
+
+    if request.method == 'POST':
+        # Obtener los datos del formulario para eliminar
+        dni = request.form['dniDelete']
+        hora_registro = request.form['horaRegistroDelete']
+
+        # Realizar una consulta en la base de datos utilizando el DNI
+        paciente_data = db.child("Pacientes").child(dni).get().val()
+
+        if paciente_data:
+            # Obtener la clave autogenerada del registro que se va a eliminar
+            registro_key = None
+            for key, paciente in paciente_data.items():
+                if paciente.get("hora_registro") == hora_registro:
+                    registro_key = key
+                    break
+
+            if registro_key:
+                # Eliminar el registro de la base de datos
+                db.child("Pacientes").child(dni).child(registro_key).remove()
+
+                # Devolver una respuesta JSON indicando el éxito de la operación
+                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
+            else:
+                tipo_alerta = 'danger'
+                mensaje_alerta = 'Error al eliminar al paciente'
+                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
+        else:
+            tipo_alerta = 'danger'
+            mensaje_alerta = 'Error al eliminar al paciente: No se encontraron registros para el DNI proporcionado'
+            return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
+    else:
+        tipo_alerta = 'danger'
+        mensaje_alerta = 'Error al eliminar al paciente: Método no permitido'
+        return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
+
+
 @app.route('/registros_pacientes_medicos', methods=['GET'])
 def registro_personal_madico():
     # Obtener todos los registros de la tabla 'Pacientes'

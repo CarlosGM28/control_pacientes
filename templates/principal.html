@@ -10,6 +10,8 @@
  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
  <!-- DataTables CSS -->
  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
  <!-- CSS personalizado -->
  <link rel="stylesheet" href="{{ url_for('static', filename='css/personal.css') }}">
  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
@@ -117,14 +119,15 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6">
+                                <div class="input-container d-flex">
+                                    <input type="text" id="dni" name="dni" class="form-control custom-input" required pattern="[0-9]{8}" title="El DNI debe contener solo 8 números">
+                                    <label for="dni" class="custom-label">DNI</label>
+                                    <button class="btn btn-primary ms-2">Rellenar</button>
+                                </div> 
                                 <div class="input-container">
                                     <input type="text" id="nombre" name="nombre" class="form-control custom-input" required pattern="[A-Za-z\s]+" title="El nombre debe contener solo letras y espacios">
                                     <label for="nombre" class="custom-label">Nombre Completo</label>
-                                </div>
-                                <div class="input-container">
-                                    <input type="text" id="dni" name="dni" class="form-control custom-input" required pattern="[0-9]{8}" title="El DNI debe contener solo 8 números">
-                                    <label for="dni" class="custom-label">DNI</label>
-                                </div>
+                                </div>                               
                                 <div class="input-container">
                                     <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control custom-input" required>
                                     <label for="fecha_nacimiento" class="custom-label">Fecha de Nacimiento</label>
@@ -145,12 +148,16 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="input-container">
-                                    <input type="tel" id="telefono" name="telefono" class="form-control custom-input" required pattern="[0-9]{1,9}" title="El teléfono debe contener solo números y tener máximo 9 caracteres" maxlength="9">
+                                    <input type="number" id="telefono" name="telefono" class="form-control custom-input" required pattern="[0-9]{1,9}" title="El teléfono debe contener solo números y tener máximo 9 caracteres" maxlength="9">
                                     <label for="telefono" class="custom-label">Teléfono</label>
                                 </div>
                                 <div class="input-container">
                                     <input type="text" id="direccion" name="direccion" class="form-control custom-input" required title="Ingrese una direccion valida">
                                     <label for="telefono" class="custom-label">Direccion</label>
+                                </div>
+                                <div class="input-container">
+                                    <input type="date" id="fecha_cita" name="fecha_cita" class="form-control custom-input" required>
+                                    <label for="fecha_cita" class="custom-label">Fecha Cita Medica</label>
                                 </div>
                                 <div class="input-container">
                                     <textarea id="consulta_medica" name="consulta_medica" class="form-control form-control-lg custom-input" rows="4" required></textarea>
@@ -167,19 +174,19 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="text" id="presion_arterial" name="presion_arterial" class="form-control custom-input" required pattern="[0-9.]+" title="La presión arterial debe contener solo números y puntos (por ejemplo, 120.5)">
+                                    <input type="number" id="presion_arterial" name="presion_arterial" class="form-control custom-input" required pattern="[0-9.]+" title="La presión arterial debe contener solo números y puntos (por ejemplo, 120.5)">
                                     <label for="presion_arterial" class="custom-label">Presión Arterial</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="text" id="saturacion" name="saturacion" class="form-control custom-input" required pattern="[0-9.]+" title="La saturación debe contener solo números y puntos (por ejemplo, 95.5)">
+                                    <input type="number" id="saturacion" name="saturacion" class="form-control custom-input" required pattern="[0-9.]+" title="La saturación debe contener solo números y puntos (por ejemplo, 95.5)">
                                     <label for="saturacion" class="custom-label">Saturación (%)</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="text" id="temperatura" name="temperatura" class="form-control custom-input" required pattern="[0-9.]+" title="La temperatura debe contener solo números y puntos (por ejemplo, 37.5)">
+                                    <input type="number" id="temperatura" name="temperatura" class="form-control custom-input" required pattern="[0-9.]+" title="La temperatura debe contener solo números y puntos (por ejemplo, 37.5)">
                                     <label for="temperatura" class="custom-label">Temperatura</label>
                                 </div>
                             </div>
@@ -187,31 +194,31 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="text" id="peso" name="peso" class="form-control custom-input" required pattern="[0-9.]+" title="El peso debe contener solo números y puntos (por ejemplo, 65.5)">
+                                    <input type="number" id="peso" name="peso" class="form-control custom-input" required pattern="[0-9.]+" title="El peso debe contener solo números y puntos (por ejemplo, 65.5)">
                                     <label for="peso" class="custom-label">Peso (kg)</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="text" id="frecuencia_respiratoria" name="frecuencia_respiratoria" class="form-control custom-input" required pattern="[0-9.]+" title="La frecuencia respiratoria debe contener solo números y puntos (por ejemplo, 18.5)">
+                                    <input type="number" id="frecuencia_respiratoria" name="frecuencia_respiratoria" class="form-control custom-input" required pattern="[0-9.]+" title="La frecuencia respiratoria debe contener solo números y puntos (por ejemplo, 18.5)">
                                     <label for="frecuencia_respiratoria" class="custom-label">Frecuencia Respiratoria (x')</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="text" id="talla" name="talla" class="form-control custom-input" required pattern="[0-9.]+" title="La talla debe contener solo números y puntos (por ejemplo, 170.5)">
+                                    <input type="number" id="talla" name="talla" class="form-control custom-input" required pattern="[0-9.]+" title="La talla debe contener solo números y puntos (por ejemplo, 170.5)">
                                     <label for="talla" class="custom-label">Talla (cm)</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="text" id="frecuencia_cardiaca" name="frecuencia_cardiaca" class="form-control custom-input" required pattern="[0-9.]+" title="La frecuencia cardíaca debe contener solo números y puntos (por ejemplo, 80.5)">
+                                    <input type="number" id="frecuencia_cardiaca" name="frecuencia_cardiaca" class="form-control custom-input" required pattern="[0-9.]+" title="La frecuencia cardíaca debe contener solo números y puntos (por ejemplo, 80.5)">
                                     <label for="frecuencia_cardiaca" class="custom-label">Frecuencia Cardíaca (x')</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="text" id="imc" name="imc" class="form-control custom-input" required pattern="[0-9.]+" title="El IMC debe contener solo números y puntos (por ejemplo, 25.5)">
+                                    <input type="number" id="imc" name="imc" class="form-control custom-input" required pattern="[0-9.]+" title="El IMC debe contener solo números y puntos (por ejemplo, 25.5)">
                                     <label for="imc" class="custom-label">IMC</label>
                                 </div>
                             </div>
@@ -245,40 +252,43 @@
     </div>
 
 <!-- Modal para mostrar detalles del paciente -->
-<div class="modal fade slide-up" id="detallesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Se agrega la clase 'modal-lg' para hacer el modal más grande -->
+<div class="modal fade animate__animated animate__slideInDown" id="detallesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Detalles del paciente</h5>
-                <!-- Botón de cerrar -->
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-family: 'Times New Roman', serif;">Detalles del paciente</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="font-family: 'Times New Roman', serif;">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6">
-                            <h4>Información Personal</h4>
-                            <p><strong>Nombre:</strong> <span id="nombrePaciente"></span></p>
-                            <p><strong>DNI:</strong> <span id="dniPaciente"></span></p>
-                            <p><strong>Correo:</strong> <span id="correoPaciente"></span></p>
-                            <p><strong>Dirección:</strong> <span id="direccionPaciente"></span></p>
-                            <p><strong>Teléfono:</strong> <span id="telefonoPaciente"></span></p>
-                            <p><strong>Género:</strong> <span id="generoPaciente"></span></p>
-                            <p><strong>Fecha de nacimiento:</strong> <span id="fechaNacimientoPaciente"></span></p>
-                            <p><strong>Hora de registro:</strong> <span id="horaRegistroPaciente"></span></p>
+                            <div style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 10px; border-radius: 10px;">
+                                <h4 style="font-weight: bold; color: #008080;">Información Personal</h4>
+                                <p><strong>Nombre:</strong> <span id="nombrePaciente"></span></p>
+                                <p><strong>DNI:</strong> <span id="dniPaciente"></span></p>
+                                <p><strong>Correo:</strong> <span id="correoPaciente"></span></p>
+                                <p><strong>Dirección:</strong> <span id="direccionPaciente"></span></p>
+                                <p><strong>Teléfono:</strong> <span id="telefonoPaciente"></span></p>
+                                <p><strong>Género:</strong> <span id="generoPaciente"></span></p>
+                                <p><strong>Fecha de nacimiento:</strong> <span id="fechaNacimientoPaciente"></span></p>
+                                <p><strong>Hora de registro:</strong> <span id="horaRegistroPaciente"></span></p>
+                            </div>
                         </div>
                         <div class="col-md-6">
-                            <h4>Información Médica</h4>
-                            <p><strong>Consulta médica:</strong> <span id="consultaMedicaPaciente"></span></p>
-                            <p><strong>Especialista:</strong> <span id="especialistaPaciente"></span></p>
-                            <p><strong>Frecuencia cardíaca:</strong> <span id="frecuenciaCardiacaPaciente"></span></p>
-                            <p><strong>Frecuencia respiratoria:</strong> <span id="frecuenciaRespiratoriaPaciente"></span></p>
-                            <p><strong>IMC:</strong> <span id="imcPaciente"></span></p>
-                            <p><strong>Peso:</strong> <span id="pesoPaciente"></span></p>
-                            <p><strong>Presión arterial:</strong> <span id="presionArterialPaciente"></span></p>
-                            <p><strong>Saturación:</strong> <span id="saturacionPaciente"></span></p>
-                            <p><strong>Talla:</strong> <span id="tallaPaciente"></span></p>
-                            <p><strong>Temperatura:</strong> <span id="temperaturaPaciente"></span></p>
+                            <div style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 10px; border-radius: 10px;">
+                                <h4 style="font-weight: bold; color: #008080;">Información Médica</h4>
+                                <p><strong>Consulta médica:</strong> <span id="consultaMedicaPaciente"></span></p>
+                                <p><strong>Especialista:</strong> <span id="especialistaPaciente"></span></p>
+                                <p><strong>Frecuencia cardíaca:</strong> <span id="frecuenciaCardiacaPaciente"></span></p>
+                                <p><strong>Frecuencia respiratoria:</strong> <span id="frecuenciaRespiratoriaPaciente"></span></p>
+                                <p><strong>IMC:</strong> <span id="imcPaciente"></span></p>
+                                <p><strong>Peso:</strong> <span id="pesoPaciente"></span></p>
+                                <p><strong>Presión arterial:</strong> <span id="presionArterialPaciente"></span></p>
+                                <p><strong>Saturación:</strong> <span id="saturacionPaciente"></span></p>
+                                <p><strong>Talla:</strong> <span id="tallaPaciente"></span></p>
+                                <p><strong>Temperatura:</strong> <span id="temperaturaPaciente"></span></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -288,133 +298,150 @@
 </div>
 
 <!-- Modal para editar detalles del paciente -->
-<div class="modal fade slide-up" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+<div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-warning text-white">
                 <h5 class="modal-title" id="exampleModalLabel">Editar detalles del paciente</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="container">
+            </div>           
+                <form id="registro_form" action="/editar_paciente" method="POST">
+                    <div class="modal-body">
                         <div class="row">
-                            <!-- Información Personal - Dos columnas -->
                             <div class="col-md-6">
-                                <h6>Información Personal</h6>
-                                <div class="mb-3">
-                                    <label for="nombreEdit" class="form-label">Nombre:</label>
-                                    <input type="text" class="form-control" id="nombreEdit">
+                                <div class="input-container">
+                                    <input type="text" id="nombreEdit" name="nombreEdit" class="form-control custom-input" required pattern="[A-Za-z\s]+" title="El nombre debe contener solo letras y espacios">
+                                    <label for="nombre" class="custom-label">Nombre Completo</label>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="dniEdit" class="form-label">DNI:</label>
-                                    <input type="text" class="form-control" id="dniEdit">
+                                <div class="input-container">
+                                    <input type="text" id="dniEdit" name="dniEdit" class="form-control custom-input" required pattern="[0-9]{8}" title="El DNI debe contener solo 8 números">
+                                    <label for="dni" class="custom-label">DNI</label>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="correoEdit" class="form-label">Correo:</label>
-                                    <input type="email" class="form-control" id="correoEdit">
+                                <div class="input-container">
+                                    <input type="date" id="fechaNacimientoEdit" name="fechaNacimientoEdit" class="form-control custom-input" required>
+                                    <label for="fecha_nacimiento" class="custom-label">Fecha de Nacimiento</label>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="direccionEdit" class="form-label">Dirección:</label>
-                                    <input type="text" class="form-control" id="direccionEdit">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="telefonoEdit" class="form-label">Teléfono:</label>
-                                    <input type="tel" class="form-control" id="telefonoEdit">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="generoEdit" class="form-label">Género:</label>
-                                    <select class="form-select" id="generoEdit">
+                                <div class="input-container">
+                                    <select id="generoEdit" name="generoEdit" class="form-select form-select-lg custom-input" required>
+                                        <option value=""></option>
                                         <option value="masculino">Masculino</option>
                                         <option value="femenino">Femenino</option>
-                                        <!-- Agregar más opciones si es necesario -->
+                                        <option value="otro">Otro</option>
                                     </select>
+                                    <label for="genero" class="custom-label">Género</label>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="fechaNacimientoEdit" class="form-label">Fecha de nacimiento:</label>
-                                    <input type="date" class="form-control" id="fechaNacimientoEdit">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="horaRegistroEdit" class="form-label">Hora de registro:</label>
-                                    <input type="text" class="form-control" id="horaRegistroEdit" disabled>
-                                    <!-- Este campo será de solo lectura y se llenará automáticamente -->
+                                <div class="input-container">
+                                    <input type="email" id="correoEdit" name="correoEdit" class="form-control custom-input" required title="Ingrese un correo electrónico válido">
+                                    <label for="correo" class="custom-label">Correo Electrónico</label>
                                 </div>
                             </div>
-                            <!-- Información Médica - Tres filas -->
-                            <div class="col-md-12">
-                                <h6>Información Médica</h6>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="consultaMedicaEdit" class="form-label">Consulta médica:</label>
-                                            <input type="text" class="form-control" id="consultaMedicaEdit">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="especialistaEdit" class="form-label">Especialista:</label>
-                                            <input type="text" class="form-control" id="especialistaEdit">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="frecuenciaCardiacaEdit" class="form-label">Frecuencia cardíaca:</label>
-                                            <input type="number" class="form-control" id="frecuenciaCardiacaEdit">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="frecuenciaRespiratoriaEdit" class="form-label">Frecuencia respiratoria:</label>
-                                            <input type="number" class="form-control" id="frecuenciaRespiratoriaEdit">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="imcEdit" class="form-label">IMC:</label>
-                                            <input type="number" class="form-control" id="imcEdit">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="pesoEdit" class="form-label">Peso:</label>
-                                            <input type="number" class="form-control" id="pesoEdit">
-                                        </div>
-                                    </div>
+                            <div class="col-md-6">
+                                <div class="input-container">
+                                    <input type="number" id="telefonoEdit" name="telefonoEdit" class="form-control custom-input" required pattern="[0-9]{1,9}" title="El teléfono debe contener solo números y tener máximo 9 caracteres" maxlength="9">
+                                    <label for="telefono" class="custom-label">Teléfono</label>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="presionArterialEdit" class="form-label">Presión arterial:</label>
-                                            <input type="number" class="form-control" id="presionArterialEdit">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="saturacionEdit" class="form-label">Saturación:</label>
-                                            <input type="number" class="form-control" id="saturacionEdit">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="tallaEdit" class="form-label">Talla:</label>
-                                            <input type="number" class="form-control" id="tallaEdit">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="temperaturaEdit" class="form-label">Temperatura:</label>
-                                            <input type="number" class="form-control" id="temperaturaEdit">
-                                        </div>
-                                    </div>
-                                    <!-- Espacio en blanco para la distribución -->
-                                    <div class="col-md-4">
-                                    </div>
+                                <div class="input-container">
+                                    <input type="text" id="direccionEdit" name="direccionEdit" class="form-control custom-input" required title="Ingrese una direccion valida">
+                                    <label for="direccion" class="custom-label">Direccion</label>
+                                </div>
+                                <div class="input-container">
+                                    <input type="text" id="horaRegistroEdit" name="horaRegistroEdit" class="form-control custom-input" readonly>
+                                    <label for="hora_registro" class="custom-label">Hora Registro</label>
+                                </div>
+                                <div class="input-container">
+                                    <textarea id="consultaMedicaEdit" name="consultaMedicaEdit" class="form-control form-control-lg custom-input" rows="4" required></textarea>
+                                    <label for="consulta_medica" class="custom-label">Consulta Médica</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="input-container">
+                                    <input type="text" id="especialistaEdit" name="especialistaEdit" class="form-control custom-input" required pattern="[A-Za-z\s]+" title="El nombre del especialista debe contener solo letras y espacios">
+                                    <label for="especialista" class="custom-label">Especialista</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-container">
+                                    <input type="number" id="presionArterialEdit" name="presionArterialEdit" class="form-control custom-input" required pattern="[0-9.]+" title="La presión arterial debe contener solo números y puntos (por ejemplo, 120.5)">
+                                    <label for="presion_arterial" class="custom-label">Presión Arterial</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-container">
+                                    <input type="number" id="saturacionEdit" name="saturacionEdit" class="form-control custom-input" required pattern="[0-9.]+" title="La saturación debe contener solo números y puntos (por ejemplo, 95.5)">
+                                    <label for="saturacion" class="custom-label">Saturación (%)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-container">
+                                    <input type="number" id="temperaturaEdit" name="temperaturaEdit" class="form-control custom-input" required pattern="[0-9.]+" title="La temperatura debe contener solo números y puntos (por ejemplo, 37.5)">
+                                    <label for="temperatura" class="custom-label">Temperatura</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="input-container">
+                                    <input type="number" id="pesoEdit" name="pesoEdit" class="form-control custom-input" required pattern="[0-9.]+" title="El peso debe contener solo números y puntos (por ejemplo, 65.5)">
+                                    <label for="peso" class="custom-label">Peso (kg)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-container">
+                                    <input type="number" id="frecuenciaRespiratoriaEdit" name="frecuenciaRespiratoriaEdit" class="form-control custom-input" required pattern="[0-9.]+" title="La frecuencia respiratoria debe contener solo números y puntos (por ejemplo, 18.5)">
+                                    <label for="frecuencia_respiratoria" class="custom-label">Frecuencia Respiratoria (x')</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-container">
+                                    <input type="number" id="tallaEdit" name="tallaEdit" class="form-control custom-input" required pattern="[0-9.]+" title="La talla debe contener solo números y puntos (por ejemplo, 170.5)">
+                                    <label for="talla" class="custom-label">Talla (cm)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-container">
+                                    <input type="number" id="frecuenciaCardiacaEdit" name="frecuenciaCardiacaEdit" class="form-control custom-input" required pattern="[0-9.]+" title="La frecuencia cardíaca debe contener solo números y puntos (por ejemplo, 80.5)">
+                                    <label for="frecuencia_cardiaca" class="custom-label">Frecuencia Cardíaca (x')</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-container">
+                                    <input type="number" id="imcEdit" name="imcEdit" class="form-control custom-input" required pattern="[0-9.]+" title="El IMC debe contener solo números y puntos (por ejemplo, 25.5)">
+                                    <label for="imc" class="custom-label">IMC</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
+                    </div>
+                </form>                                                
+            </div>
+        </div>
+    </div>
+
+<!-- Modal de confirmación para eliminar registro -->
+<div class="modal fade" id="confirmarEliminarModal" tabindex="-1" aria-labelledby="confirmarEliminarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="confirmarEliminarModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
+                <form action="/eliminar_paciente" method="POST">
+                    <!-- Campos de entrada invisibles para almacenar el DNI y la hora de registro -->
+                    <input type="hidden" id="dniDelete" name="dniDelete">
+                    <input type="hidden" id="horaRegistroDelete" name="horaRegistroDelete">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- Bootstrap JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
