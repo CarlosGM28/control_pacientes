@@ -107,6 +107,7 @@ def pacientes():
     talla = request.form['talla']
     frecuencia_cardiaca = request.form['frecuencia_cardiaca']
     imc = request.form['imc']
+    fecha_cita = request.form['fecha_cita']
 
     try:
 
@@ -130,7 +131,8 @@ def pacientes():
             'talla': talla,
             'frecuencia_cardiaca': frecuencia_cardiaca,
             'imc': imc,
-            'hora_registro': hora_actual
+            'hora_registro': hora_actual,
+            'fecha_cita': fecha_cita
 
         })
         
@@ -159,32 +161,40 @@ def regis_paciente():
 
     # Iterar sobre los registros de pacientes
     for dni, paciente_data in registros_pacientes.items():
-        for key, paciente in paciente_data.items():
-            # Crear un diccionario para almacenar los datos de cada paciente
-            datos_paciente = {
-                'nombre': paciente.get('nombre', ''),
-                'dni': paciente.get('dni', ''),
-                'consulta_medica': paciente.get('consulta_medica', ''),
-                'correo': paciente.get('correo', ''),
-                'direccion': paciente.get('direccion', ''),
-                'especialista': paciente.get('especialista', ''),
-                'fecha_nacimiento': paciente.get('fecha_nacimiento', ''),
-                'frecuencia_cardiaca': paciente.get('frecuencia_cardiaca', ''),
-                'frecuencia_respiratoria': paciente.get('frecuencia_respiratoria', ''),
-                'genero': paciente.get('genero', ''),
-                'hora_registro': paciente.get('hora_registro', ''),
-                'imc': paciente.get('imc', ''),
-                'peso': paciente.get('peso', ''),
-                'presion_arterial': paciente.get('presion_arterial', ''),
-                'saturacion': paciente.get('saturacion', ''),
-                'talla': paciente.get('talla', ''),
-                'telefono': paciente.get('telefono', ''),
-                'temperatura': paciente.get('temperatura', '')
-            }
-            datos_pacientes.append(datos_paciente)
+        # Verificar si paciente_data es un diccionario
+        if isinstance(paciente_data, dict):
+            # Iterar sobre los elementos del diccionario paciente_data
+            for key, paciente in paciente_data.items():
+                # Crear un diccionario para almacenar los datos de cada paciente
+                datos_paciente = {
+                    'nombre': paciente.get('nombre', ''),
+                    'dni': paciente.get('dni', ''),
+                    'consulta_medica': paciente.get('consulta_medica', ''),
+                    'correo': paciente.get('correo', ''),
+                    'direccion': paciente.get('direccion', ''),
+                    'especialista': paciente.get('especialista', ''),
+                    'fecha_nacimiento': paciente.get('fecha_nacimiento', ''),
+                    'frecuencia_cardiaca': paciente.get('frecuencia_cardiaca', ''),
+                    'frecuencia_respiratoria': paciente.get('frecuencia_respiratoria', ''),
+                    'genero': paciente.get('genero', ''),
+                    'hora_registro': paciente.get('hora_registro', ''),
+                    'fecha_cita': paciente.get('fecha_cita', ''),
+                    'imc': paciente.get('imc', ''),
+                    'peso': paciente.get('peso', ''),
+                    'presion_arterial': paciente.get('presion_arterial', ''),
+                    'saturacion': paciente.get('saturacion', ''),
+                    'talla': paciente.get('talla', ''),
+                    'telefono': paciente.get('telefono', ''),
+                    'temperatura': paciente.get('temperatura', '')
+                }
+                datos_pacientes.append(datos_paciente)
+        else:
+            # Manejar el caso donde paciente_data no es un diccionario
+            print(f"Los datos del paciente con DNI {dni} no son válidos.")
     
     # Devolver los datos de los pacientes como JSON
-    return jsonify({"datos":datos_pacientes})
+    return jsonify({"datos": datos_pacientes})
+
 
 @app.route('/editar_paciente', methods=['POST'])
 def editar_paciente():

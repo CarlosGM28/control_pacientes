@@ -11,38 +11,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>  
     <link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/personal.css') }}">
-    <!-- CSS adicional -->
-    <style>
-        /* Estilos para el card de datos */
-        .card-datos {
-            background-color: #f8f9fa;
-            border: 1px solid #ced4da;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .card-datos:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .card-datos h1 {
-            color: #007bff;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .loading-spinner {
-            display: none; /* Para ocultar el spinner inicialmente */
-        }
-
-        /* Spinner de carga */
-        .spinner-border {
-            width: 3rem;
-            height: 3rem;
-        }
-    </style>
 </head>
 <body>
     <!-- Navbar -->
@@ -89,73 +57,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function() {
-            $("#consultaForm").submit(function(event) {
-                event.preventDefault(); // Evitar el envío del formulario por defecto
-
-                var numero = $("#numero").val();
-                var tipo = $("#tipo").val();
-                var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImNlZ21jYXJsb3M5ODdAZ21haWwuY29tIn0.CDsp43On-Y7Z-EDkCsFkVkWjCmkArqZyEwTOtVL2MQg";
-                var url;
-
-                if (tipo === "dni") {
-                    url = `https://dniruc.apisperu.com/api/v1/dni/${numero}?token=${token}`;
-                } else if (tipo === "ruc") {
-                    url = `https://dniruc.apisperu.com/api/v1/ruc/${numero}?token=${token}`;
-                }
-
-                $.ajax({
-    url: url,
-    type: "GET",
-    success: function(data) {
-        // Mostrar los datos en el HTML
-        var resultadoHTML = "";
-        if (tipo === "dni") {
-            resultadoHTML += `
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Información del DNI</h5>
-                        <p class="card-text">Nombres: ${data.nombres}</p>
-                        <p class="card-text">Apellido Paterno: ${data.apellidoPaterno}</p>
-                        <p class="card-text">Apellido Materno: ${data.apellidoMaterno}</p>
-                        <p class="card-text">DNI: ${data.dni}</p>
-                        <p class="card-text">Código de Verificación: ${data.codVerifica}</p>
-                        <p class="card-text">Éxito: ${data.success}</p>
-                    </div>
-                </div>
-            `;
-        } else if (tipo === "ruc") {
-            resultadoHTML += `
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Información del RUC</h5>
-                        <p class="card-text">RUC: ${data.ruc}</p>
-                        <p class="card-text">Razón Social: ${data.razonSocial}</p>
-                        <p class="card-text">Estado: ${data.estado}</p>
-                        <p class="card-text">Condición: ${data.condicion}</p>
-                        <p class="card-text">Dirección: ${data.direccion}</p>
-                        <p class="card-text">Departamento: ${data.departamento}</p>
-                        <p class="card-text">Provincia: ${data.provincia}</p>
-                        <p class="card-text">Distrito: ${data.distrito}</p>
-                        <p class="card-text">Ubigeo: ${data.ubigeo}</p>
-                        <p class="card-text">Capital: ${data.capital}</p>
-                    </div>
-                </div>
-            `;
-        }
-        $("#resultado").html(resultadoHTML);
-    },
-    error: function(xhr, status, error) {
-        // Manejar el error si la solicitud falla
-        console.error("Error al realizar la solicitud:", error);
-        $("#resultado").html("<div class='alert alert-danger mt-3' role='alert'>Error al realizar la solicitud.</div>");
-    }
-});
-            });
-        });
-    </script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

@@ -35,7 +35,7 @@
                     <li class="show"><a href="/principal" class="text-decoration-none"><i class="fas fa-user"></i> Pacientes</a></li>
                     <li class="show"><a href="#" class="text-decoration-none"><i class="far fa-calendar-alt"></i> Citas</a></li>
                     <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-chart-bar"></i> Informes</a></li>
-                    <li class="show"><a href="/registro_reniec" class="text-decoration-none"><i class="fas fa-search"></i> Busqueda Reniec</a></li>
+                    <li class="show"><a href="/medico_bot" class="text-decoration-none"><i class="fas fa-stethoscope"></i> Bot Médico</a></li>
                     <li class="show"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i> Personal Médico</a></li>
                     <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-cog"></i> Configuración</a></li>
                     <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
@@ -111,23 +111,29 @@
     <div class="modal fade" id="modal_paciente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-primary text-white d-flex justify-content-between align-items-center">
                     <h5 class="modal-title" id="exampleModalLabel">Registro de Pacientes</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>               
+                    <div class="input-container d-flex align-items-center ms-auto"> <!-- Usamos la clase ms-auto para alinear a la derecha -->
+                        <form id="consultaForm" class="d-flex">
+                            <input type="text" id="dniRellenar" name="dniRellenar" class="form-control custom-input me-2" required pattern="[0-9]{8}" title="El DNI debe contener solo 8 números" placeholder="DNI">
+                            <label for="dni" class="custom-label"></label>
+                            <button class="btn btn-success me-2" type="submit">Rellenar</button>
+                        </form>                        
+                    </div>
+                </div>
+                          
                 <form id="registro_form" action="/registrar_paciente" method="POST">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="input-container d-flex">
-                                    <input type="text" id="dni" name="dni" class="form-control custom-input" required pattern="[0-9]{8}" title="El DNI debe contener solo 8 números">
-                                    <label for="dni" class="custom-label">DNI</label>
-                                    <button class="btn btn-primary ms-2">Rellenar</button>
-                                </div> 
                                 <div class="input-container">
                                     <input type="text" id="nombre" name="nombre" class="form-control custom-input" required pattern="[A-Za-z\s]+" title="El nombre debe contener solo letras y espacios">
                                     <label for="nombre" class="custom-label">Nombre Completo</label>
-                                </div>                               
+                                </div>
+                                <div class="input-container d-flex">
+                                    <input type="text" id="dni" name="dni" class="form-control custom-input" required pattern="[0-9]{8}" title="El DNI debe contener solo 8 números" readonly>
+                                    <label for="dni" class="custom-label">DNI</label>
+                                </div>                                
                                 <div class="input-container">
                                     <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control custom-input" required>
                                     <label for="fecha_nacimiento" class="custom-label">Fecha de Nacimiento</label>
@@ -229,24 +235,6 @@
                         <button type="submit" class="btn btn-primary">Registrar Paciente</button>
                     </div>
                 </form>                                                
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalDetalles" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Detalles del Paciente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Aquí se mostrarán los detalles técnicos del paciente -->
-                    <div id="detallesPaciente"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
             </div>
         </div>
     </div>
