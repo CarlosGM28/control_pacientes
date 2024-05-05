@@ -2,3 +2,4 @@ flask
 requests
 pycryptodome==3.10.1
 pyrebase4
+google.generativeai

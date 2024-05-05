@@ -1,7 +1,9 @@
+import os
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from datetime import datetime
 import pyrebase
+import google.generativeai as genai
 
 app = Flask(__name__)
 
