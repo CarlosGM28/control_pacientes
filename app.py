@@ -240,6 +240,39 @@ def login():
     # Si la solicitud es GET, renderizar la plantilla de inicio de sesión
     return render_template('index.html')
 
+@app.route('/ia_medic', methods=['GET', 'POST'])
+def iamedic():
+        # Asigna tu clave de API a una variable de entorno
+        os.environ['API_KEY'] = 'AIzaSyDNsuMqMk70F73lY_1SQKrKHbXhJn0PLcY'
+
+        # Configura la clave de API desde la variable de entorno
+        api_key = os.environ.get('API_KEY')
+        if not api_key:
+            return "API_KEY no encontrada en las variables de entorno."
+
+        genai.configure(api_key=api_key)
+
+        # Leer palabras clave desde el archivo
+        try:
+            with open("palabras_claves.txt", "r") as file:
+                # Leer las líneas y eliminar comillas y espacios en blanco
+                palabras_clave = [line.strip().strip('"') for line in file.read().split(",")]
+        except FileNotFoundError:
+            return "Error: El archivo palabras_clave.txt no se encontró."
+
+        # Creación del modelo generativo
+        model = genai.GenerativeModel('gemini-pro')
+
+        if request.method == 'POST':
+            pregunta_usuario = request.form['pregunta']
+            if any(keyword in pregunta_usuario.lower() for keyword in palabras_clave):
+                response = model.generate_content(f"Pregunta: {pregunta_usuario}")
+                respuesta = response.text
+            else:
+                respuesta = "Lo siento, esta pregunta no está relacionada con la medicina."
+            return render_template('vistas/ia_medic.html', respuesta=respuesta)
+        elif request.method == 'GET':
+            return render_template('vistas/ia_medic.html')
 
 @app.route('/logout')
 def logout():
@@ -272,6 +305,18 @@ def paciente():
 
     # Renderizar la plantilla principal y pasar el correo electrónico del usuario
     return render_template('vistas/register.html', user_email=user_email)
+
+@app.route('/medico_bot')
+def medicobot():
+    # Obtener el correo electrónico del usuario autenticado desde la sesión
+    user_email = session.get('user_email')
+
+    # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
+    if not user_email:
+        return redirect('/login')
+
+    # Renderizar la plantilla principal y pasar el correo electrónico del usuario
+    return render_template('vistas/ia_medic.html', user_email=user_email)
 
 @app.route('/registro_reniec')
 def ciudadano():

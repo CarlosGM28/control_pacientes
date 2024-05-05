@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Médica</title>
+</head>
+<body>
+    <h1>Consulta Médica</h1>
+    <form action="/ia_medic" method="POST">
+        <label for="pregunta">Haz una pregunta relacionada con la medicina:</label><br>
+        <input type="text" id="pregunta" name="pregunta"><br><br>
+        <button type="submit">Enviar</button>
+    </form>
+    <div id="respuesta">
+        {% if respuesta %}
+            <p>{{ respuesta }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
