@@ -39,23 +39,25 @@
                     <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
                 </ul>
             </div>  
-
-            <!-- Contenido principal -->
-            <div class="col-lg-10 col-md-9 col-sm-8" id="contenido">
-
-                <div id="respuesta">
-                    {% if respuesta %}
-                        <p>{{ respuesta }}</p>
-                    {% endif %}
-                </div>
-                <form action="/ia_medic" method="POST">
-                    <label for="pregunta">Haz una pregunta relacionada con la medicina:</label><br>
-                    <input type="text" id="pregunta" name="pregunta"><br><br>
-                    <button type="submit">Enviar</button>
-                </form>
-            </div>            
-        </div>
+            
+<!-- Contenido principal -->
+<div class="col-lg-10 col-md-9 col-sm-8" id="contenido">
+    <div id="respuesta" style="padding: 10px;">
+        {% if respuesta %}
+            <textarea class="form-control rounded-lg" rows="6" readonly>{{ respuesta }}</textarea>
+        {% endif %}
     </div>
+    <div style="display: flex; justify-content: center; margin-top: 50%;">
+        <form action="/ia_medic" method="POST" class="mt-auto" style="width: 50%;">
+            <div class="d-flex justify-content-end mb-3">
+                <input type="text" id="pregunta" name="pregunta" class="form-control form-control-sm rounded-pill me-2" style="padding: 10px 20px;" placeholder="Haz una pregunta relacionada con la medicina...">
+                <button type="submit" class="btn btn-primary btn-sm rounded-pill">Enviar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
