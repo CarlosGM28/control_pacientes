@@ -27,11 +27,13 @@ $(document).ready(function() {
                     { data: 'hora_actual' },
                     { data: 'genero' },
                     {
-                        data: null,
+                     data: null,
                         render: function(data, type, row) {
-                            return '<button class="btn btn-info ver-detalles" style="margin-right: 5px;"><i class="fas fa-eye"></i></button>' +
-                                '<button class="btn btn-warning editar" style="margin-right: 5px;"><i class="fas fa-pencil-alt"></i></button>' +
-                                '<button class="btn btn-danger eliminar" style="margin-right: 5px;"><i class="fas fa-trash-alt"></i></button>';
+                            return '<div class="d-flex justify-content-center">' +
+                            '<button class="btn btn-info ver-detalles" style="margin-right: 5px;"><i class="fas fa-eye"></i></button>' +
+                            '<button class="btn btn-warning editar" style="margin-right: 5px;"><i class="fas fa-pencil-alt"></i></button>' +
+                            '<button class="btn btn-danger eliminar" style="margin-right: 5px;"><i class="fas fa-trash-alt"></i></button>' +
+                            '</div>';
                         }
                     }
                 ],
@@ -41,7 +43,13 @@ $(document).ready(function() {
                         orderable: false,
                         searchable: false
                     }
-                ]
+                ],
+                scrollX: true,
+                scrollY: 642,
+                language: {
+                    "lengthMenu": "Mostrar _MENU_ entradas por página", // Cambiar nombre de entradas por página
+                    "search": "Buscar:", // Cambiar texto de búsqueda
+                }
             });
 
             // Manejar clics en los botones

@@ -23,9 +23,9 @@
             <span class="navbar-brand mb-0 h1"><i class="fas fa-hospital"></i> Hospital XYZ</span>
             <span class="navbar-text" style="color: white; font-size: 17px; font-weight: bold; text-transform: uppercase;">
                 <i class="fas fa-user-circle" style="margin-right: 5px; font-size: 24px;"></i>{{ user_email }}
-            </span>                                             
+            </span>
         </div>
-    </nav>    
+    </nav>
 
     <div class="container-fluid">
         <div class="row">
@@ -33,7 +33,7 @@
             <div class="col-lg-2 col-md-3 col-sm-4 col-6" id="navegador">
                 <ul class="list-unstyled">
                     <li class="show"><a href="/principal" class="text-decoration-none"><i class="fas fa-user"></i> Pacientes</a></li>
-                    <li class="show"><a href="#" class="text-decoration-none"><i class="far fa-calendar-alt"></i> Citas</a></li>
+                    <li class="show"><a href="/citas_medicas" class="text-decoration-none"><i class="far fa-calendar-alt"></i> Citas</a></li>
                     <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-chart-bar"></i> Informes</a></li>
                     <li class="show"><a href="/medico_bot" class="text-decoration-none"><i class="fas fa-stethoscope"></i> Bot Médico</a></li>
                     <li class="show"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i> Personal Médico</a></li>
@@ -41,52 +41,43 @@
                     <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
                 </ul>
             </div>
-            
+
             <!-- Contenido -->
             <div class="col-lg-10 col-md-9 col-sm-9" id="contenido">
-                <nav id="encabezado" class="navbar navbar-dark bg-dark">
+                <nav id="" class="">
                     <div class="container-fluid">
                         <div class="input-group">
                             <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modal_paciente">Registrar Paciente</button>
                         </div>
                     </div>
                 </nav>
-                              
-                <div class="table-container">
-                    <div class="table-responsive">
-                        <div class="table-scroll">
-                            <table id="data_table" class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>DNI</th>
-                                        <th>Correo</th>
-                                        <th>Dirección</th>
-                                        <th>Teléfono</th>
-                                        <th>Género</th>
-                                        <th>Nacimiento</th>
-                                        <th>Registro</th>
-                                        <th>Acciones</th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Aquí van los datos de la tabla -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>                            
-                                                               
+                    <br>
+                <table id="data_table" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Correo</th>
+                            <th>Dirección</th>
+                            <th>Teléfono</th>
+                            <th>Género</th>
+                            <th>Nacimiento</th>
+                            <th>Registro</th>
+                            <th>Acciones</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+
                 <!-- Alerta -->
                 {% if tipo_alerta %}
                 <div id="alerta" class="alert alert-{{ tipo_alerta }} alert-dismissible fade show position-fixed bottom-0 end-0" role="alert" style="width: 17%;">
@@ -102,7 +93,7 @@
                         alerta.classList.remove('show');
                     }, 5000);
                 </script>
-                {% endif %}                                           
+                {% endif %}
             </div>
         </div>
     </div>
@@ -118,10 +109,10 @@
                             <input type="text" id="dniRellenar" name="dniRellenar" class="form-control custom-input me-2" required pattern="[0-9]{8}" title="El DNI debe contener solo 8 números" placeholder="DNI">
                             <label for="dni" class="custom-label"></label>
                             <button class="btn btn-success me-2" type="submit">Rellenar</button>
-                        </form>                        
+                        </form>
                     </div>
                 </div>
-                          
+
                 <form id="registro_form" action="/registrar_paciente" method="POST">
                     <div class="modal-body">
                         <div class="row">
@@ -133,7 +124,7 @@
                                 <div class="input-container d-flex">
                                     <input type="text" id="dni" name="dni" class="form-control custom-input" required pattern="[0-9]{8}" title="El DNI debe contener solo 8 números" readonly>
                                     <label for="dni" class="custom-label">DNI</label>
-                                </div>                                
+                                </div>
                                 <div class="input-container">
                                     <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control custom-input" required>
                                     <label for="fecha_nacimiento" class="custom-label">Fecha de Nacimiento</label>
@@ -180,19 +171,19 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="number" id="presion_arterial" name="presion_arterial" class="form-control custom-input" required pattern="[0-9.]+" title="La presión arterial debe contener solo números y puntos (por ejemplo, 120.5)">
+                                    <input type="number" id="presion_arterial" name="presion_arterial" class="form-control custom-input"  pattern="[0-9.]+" title="La presión arterial debe contener solo números y puntos (por ejemplo, 120.5)">
                                     <label for="presion_arterial" class="custom-label">Presión Arterial</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="number" id="saturacion" name="saturacion" class="form-control custom-input" required pattern="[0-9.]+" title="La saturación debe contener solo números y puntos (por ejemplo, 95.5)">
+                                    <input type="number" id="saturacion" name="saturacion" class="form-control custom-input"  pattern="[0-9.]+" title="La saturación debe contener solo números y puntos (por ejemplo, 95.5)">
                                     <label for="saturacion" class="custom-label">Saturación (%)</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="number" id="temperatura" name="temperatura" class="form-control custom-input" required pattern="[0-9.]+" title="La temperatura debe contener solo números y puntos (por ejemplo, 37.5)">
+                                    <input type="number" id="temperatura" name="temperatura" class="form-control custom-input"  pattern="[0-9.]+" title="La temperatura debe contener solo números y puntos (por ejemplo, 37.5)">
                                     <label for="temperatura" class="custom-label">Temperatura</label>
                                 </div>
                             </div>
@@ -200,31 +191,31 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="number" id="peso" name="peso" class="form-control custom-input" required pattern="[0-9.]+" title="El peso debe contener solo números y puntos (por ejemplo, 65.5)">
+                                    <input type="number" id="peso" name="peso" class="form-control custom-input"  pattern="[0-9.]+" title="El peso debe contener solo números y puntos (por ejemplo, 65.5)">
                                     <label for="peso" class="custom-label">Peso (kg)</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="number" id="frecuencia_respiratoria" name="frecuencia_respiratoria" class="form-control custom-input" required pattern="[0-9.]+" title="La frecuencia respiratoria debe contener solo números y puntos (por ejemplo, 18.5)">
+                                    <input type="number" id="frecuencia_respiratoria" name="frecuencia_respiratoria" class="form-control custom-input"  pattern="[0-9.]+" title="La frecuencia respiratoria debe contener solo números y puntos (por ejemplo, 18.5)">
                                     <label for="frecuencia_respiratoria" class="custom-label">Frecuencia Respiratoria (x')</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="number" id="talla" name="talla" class="form-control custom-input" required pattern="[0-9.]+" title="La talla debe contener solo números y puntos (por ejemplo, 170.5)">
+                                    <input type="number" id="talla" name="talla" class="form-control custom-input"  pattern="[0-9.]+" title="La talla debe contener solo números y puntos (por ejemplo, 170.5)">
                                     <label for="talla" class="custom-label">Talla (cm)</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="number" id="frecuencia_cardiaca" name="frecuencia_cardiaca" class="form-control custom-input" required pattern="[0-9.]+" title="La frecuencia cardíaca debe contener solo números y puntos (por ejemplo, 80.5)">
+                                    <input type="number" id="frecuencia_cardiaca" name="frecuencia_cardiaca" class="form-control custom-input"  pattern="[0-9.]+" title="La frecuencia cardíaca debe contener solo números y puntos (por ejemplo, 80.5)">
                                     <label for="frecuencia_cardiaca" class="custom-label">Frecuencia Cardíaca (x')</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-container">
-                                    <input type="number" id="imc" name="imc" class="form-control custom-input" required pattern="[0-9.]+" title="El IMC debe contener solo números y puntos (por ejemplo, 25.5)">
+                                    <input type="number" id="imc" name="imc" class="form-control custom-input"  pattern="[0-9.]+" title="El IMC debe contener solo números y puntos (por ejemplo, 25.5)">
                                     <label for="imc" class="custom-label">IMC</label>
                                 </div>
                             </div>
@@ -234,13 +225,13 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary">Registrar Paciente</button>
                     </div>
-                </form>                                                
+                </form>
             </div>
         </div>
     </div>
 
 <!-- Modal para mostrar detalles del paciente -->
-<div class="modal fade animate__animated animate__slideInDown" id="detallesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="detallesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-info text-white">
@@ -292,7 +283,7 @@
             <div class="modal-header bg-warning text-white">
                 <h5 class="modal-title" id="exampleModalLabel">Editar detalles del paciente</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>           
+            </div>
                 <form id="registro_form" action="/editar_paciente" method="POST">
                     <div class="modal-body">
                         <div class="row">
@@ -405,7 +396,7 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
                     </div>
-                </form>                                                
+                </form>
             </div>
         </div>
     </div>
@@ -430,6 +421,15 @@
         </div>
     </div>
 </div>
+<footer class="bg-dark text-center text-white fixed-bottom">
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2024 Creado por Carlos Galloso
+            </div>
+        </div>
+    </div>
+</footer>
 
 <!-- Bootstrap JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

@@ -1,3 +1,6 @@
+body {
+    padding-bottom: 40px; /* Altura del footer */
+}
 /* Estilos CSS adicionales */
 .input-container {
     position: relative;
@@ -30,111 +33,58 @@
     color: #3498db; /* Color azul */
 }
 
-
-
-/* Estilos personalizados para la tabla de pacientes */
-/* Estilo de la tabla */
-.table-container {
-    margin-top: 20px;
-    overflow-y: auto; /* Añadido para permitir desplazamiento horizontal */
+/* Estilos personalizados */
+.dataTables_wrapper {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
 }
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table-scroll {
-    overflow-x: auto;
-    overflow-y: auto;
-    max-height: 78vh; /* Establece la altura máxima deseada */
-}
-
-.table th,
-.table td {
+th, td {
     padding: 12px;
     text-align: left;
-    border: 1px solid #34495e;
-    white-space: nowrap; /* Evitar que el texto se divida en varias líneas */
-    overflow: hidden; /* Ocultar el contenido que desborda */
-    text-overflow: ellipsis; /* Mostrar puntos suspensivos (...) cuando el contenido desborda */
+    border: 1px solid #ddd; /* Grosor y color del borde */
 }
-
-.table th {
-    background-color: #34495e;
-    color: #ecf0f1;
-    font-weight: bold;
+th {
+    background-color: #1e90ff; /* Azul oscuro */
+    color: white;
 }
-
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: #ebebeb;
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Gris claro para filas pares */
 }
-
-/* Estilo de las acciones */
-.table .acciones button {
-    margin-right: 5px;
-    padding: 6px 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+tr:nth-child(odd) {
+    background-color: #f9f9f9; /* Gris más claro para filas impares */
 }
-
-.table .acciones button:hover {
-    background-color: #3498db;
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: #007bff;
     color: #fff;
+    border-color: #007bff;
 }
-
-/* Estilos personalizados para el modal */
-.modal-content {
-    border-radius: 15px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
 }
-
-.modal-header {
-    background-color: #3498db;
-    border-bottom: none;
-    padding: 20px;
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #ccc;
+    border-radius: 20px; /* Hace los bordes más redondeados */
+    padding: 10px;
+    width: 300px;
+    margin-right: 10px; /* Añade margen entre el input y la tabla */
 }
-
-.modal-title {
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 20px; /* Hace los bordes más redondeados */
+    padding: 8px;
+    margin-bottom: 10px; /* Añade margen entre el select y la tabla */
+}
+.dataTables_wrapper .dataTables_info {
+    color: #666;
+    margin-top: 10px;
+}
+.dataTables_wrapper .dataTables_length label {
     color: #333;
+    margin-right: 10px;
 }
-
-.modal-body {
-    padding: 20px;
-}
-
-/* Ajustar el tamaño de los detalles según tus necesidades */
-.modal-body p {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-/* Botón de cerrar */
-.btn-close {
-    color: #000;
-}
-
-/* Estilo del botón para cerrar el modal */
-.btn-close:focus,
-.btn-close:hover {
-    color: #333; /* Cambia el color al pasar el ratón */
-    text-decoration: none; /* Evita que el cursor se convierta en un puntero */
-}
-
-.modal-content {
-    font-family: Arial, sans-serif;
-}
-
-.modal-body p {
-    font-size: 16px;
-}
-
-.modal-body h4 {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.animate__slideInDown {
-    --animate-duration: 5s; /* Ajusta la duración de la animación según lo necesites */
+/* Margen alrededor de la tabla */
+#example_wrapper {
+    margin: 20px;
 }

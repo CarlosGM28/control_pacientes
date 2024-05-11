@@ -135,7 +135,7 @@ def pacientes():
             'fecha_cita': fecha_cita
 
         })
-        
+
         return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
 
     except Exception as e:
@@ -149,13 +149,13 @@ def mostrar_alerta(tipo_alerta, mensaje_alerta, tipo_registro):
     if tipo_registro == 'personal':
         return render_template('vistas/register.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
     elif tipo_registro == 'paciente':
-        return render_template('principal.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)       
+        return render_template('principal.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
 
 @app.route('/registros_pacientes', methods=['GET'])
 def regis_paciente():
     # Obtener todos los registros de la tabla 'Pacientes'
     registros_pacientes = db.child("Pacientes").get().val()
-    
+
     # Lista para almacenar los datos de los pacientes
     datos_pacientes = []
 
@@ -191,7 +191,7 @@ def regis_paciente():
         else:
             # Manejar el caso donde paciente_data no es un diccionario
             print(f"Los datos del paciente con DNI {dni} no son válidos.")
-    
+
     # Devolver los datos de los pacientes como JSON
     return jsonify({"datos": datos_pacientes})
 
@@ -315,7 +315,7 @@ def eliminar_paciente():
 def registro_personal_madico():
     # Obtener todos los registros de la tabla 'Pacientes'
     registros_personal = db.child("personal").get().val()
-    
+
     # Lista para almacenar los datos de los pacientes
     datos_personal = []
 
@@ -333,7 +333,7 @@ def registro_personal_madico():
             'hora_actual': personal_data.get('hora_actual', '')
         }
         datos_personal.append(datos_personal_medico)
-    
+
     # Devolver los datos de los pacientes como JSON
     return jsonify({"datos": datos_personal})
 
@@ -367,37 +367,77 @@ def login():
 
 @app.route('/ia_medic', methods=['GET', 'POST'])
 def iamedic():
-        # Asigna tu clave de API a una variable de entorno
-        os.environ['API_KEY'] = 'AIzaSyDNsuMqMk70F73lY_1SQKrKHbXhJn0PLcY'
+    # Asigna tu clave de API a una variable de entorno
+    os.environ['API_KEY'] = 'AIzaSyDNsuMqMk70F73lY_1SQKrKHbXhJn0PLcY'
 
-        # Configura la clave de API desde la variable de entorno
-        api_key = os.environ.get('API_KEY')
-        if not api_key:
-            return "API_KEY no encontrada en las variables de entorno."
+    # Configura la clave de API desde la variable de entorno
+    api_key = os.environ.get('API_KEY')
+    if not api_key:
+        return "API_KEY no encontrada en las variables de entorno."
 
-        genai.configure(api_key=api_key)
+    genai.configure(api_key=api_key)
 
-        # Leer palabras clave desde el archivo
-        try:
-            with open("palabras_claves.txt", "r") as file:
-                # Leer las líneas y eliminar comillas y espacios en blanco
-                palabras_clave = [line.strip().strip('"') for line in file.read().split(",")]
-        except FileNotFoundError:
-            return "Error: El archivo palabras_clave.txt no se encontró."
+    # Obtiene la ruta absoluta del archivo palabras_claves.txt
+    palabras_claves_file = os.path.join(os.path.dirname(__file__), 'palabras_claves.txt')
 
-        # Creación del modelo generativo
-        model = genai.GenerativeModel('gemini-pro')
+    # Leer palabras clave desde el archivo
+    try:
+        with open(palabras_claves_file, "r") as file:
+            # Leer las líneas y eliminar comillas y espacios en blanco
+            palabras_clave = [line.strip().strip('"') for line in file.read().split(",")]
+    except FileNotFoundError:
+        palabras_clave = []
+        return "Error: El archivo palabras_claves.txt no se encontró."
 
-        if request.method == 'POST':
-            pregunta_usuario = request.form['pregunta']
-            if any(keyword in pregunta_usuario.lower() for keyword in palabras_clave):
-                response = model.generate_content(f"Pregunta: {pregunta_usuario}")
-                respuesta = response.text
-            else:
-                respuesta = "Lo siento, esta pregunta no está relacionada con la medicina."
-            return render_template('vistas/ia_medic.html', respuesta=respuesta)
-        elif request.method == 'GET':
-            return render_template('vistas/ia_medic.html')
+    # Creación del modelo generativo
+    model = genai.GenerativeModel('gemini-pro')
+
+    if request.method == 'POST':
+        pregunta_usuario = request.form['pregunta']
+        if any(keyword in pregunta_usuario.lower() for keyword in palabras_clave):
+            response = model.generate_content(f"Pregunta: {pregunta_usuario}")
+            lines = response.text.split('\n')
+            formatted_lines = []
+            ul_open = False
+            strong_open = False
+
+            for line in lines:
+                if line.startswith('*'):
+                    if not ul_open:
+                        formatted_lines.append('<ul>')
+                        ul_open = True
+                    line = line.replace('*', '').strip()
+                    if '**' in line:
+                        if not strong_open:
+                            formatted_lines.append('<strong>')
+                            strong_open = True
+                        line = line.replace('**', '').strip()
+                        formatted_lines.append(f'<li>{line}</li>')
+                        formatted_lines.append('</strong>')
+                        strong_open = False
+                    else:
+                        formatted_lines.append(f'<li>{line}</li>')
+                elif ul_open:
+                    formatted_lines.append('</ul>')
+                    ul_open = False
+                elif '**' in line:
+                    if not strong_open:
+                        formatted_lines.append('<strong>')
+                        strong_open = True
+                    line = line.replace('**', '').strip()
+                    formatted_lines.append(f'<p>{line}</p>')
+                    formatted_lines.append('</strong>')
+                    strong_open = False
+                else:
+                    formatted_lines.append(f'<p>{line}</p>')
+
+            respuesta = ''.join(formatted_lines)
+        else:
+            respuesta = "Lo siento, esta pregunta no está relacionada con la medicina."
+        return render_template('vistas/ia_medic.html', respuesta=respuesta)
+    elif request.method == 'GET':
+        return render_template('vistas/ia_medic.html')
+
 
 @app.route('/logout')
 def logout():
@@ -455,6 +495,21 @@ def ciudadano():
     # Renderizar la plantilla principal y pasar el correo electrónico del usuario
     return render_template('vistas/reniec.html', user_email=user_email)
 
+@app.route('/citas_medicas')
+def citas():
+    # Obtener el correo electrónico del usuario autenticado desde la sesión
+    user_email = session.get('user_email')
+
+    # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
+    if not user_email:
+        return redirect('/login')
+
+    # Renderizar la plantilla principal y pasar el correo electrónico del usuario
+    return render_template('vistas/citas.html', user_email=user_email)
+
+@app.route('/consultas')
+def reniec():
+    return render_template('vistas/reniec.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

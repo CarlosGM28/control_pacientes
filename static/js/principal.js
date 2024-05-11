@@ -1,13 +1,3 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Animación para mostrar elementos del menú
-    const items = document.querySelectorAll('#navegador ul li');
-    items.forEach((item, index) => {
-        setTimeout(() => {
-            item.classList.add('show');
-        }, index * 100);
-    });
-});
-
 $(document).ready(function() {
     $.ajax({
         url: '/registros_pacientes',
@@ -27,23 +17,24 @@ $(document).ready(function() {
                     { data: 'fecha_nacimiento' },
                     { data: 'hora_registro' },
                     {
-                        // Columna de botones
-                        data: null,
+                     data: null,
                         render: function(data, type, row) {
-                            return '<button class="btn btn-info ver-detalles" style="margin-right: 5px;"><i class="fas fa-eye"></i></button>' +
-                                '<button class="btn btn-warning editar" style="margin-right: 5px;"><i class="fas fa-pencil-alt"></i></button>' +
-                                '<button class="btn btn-danger eliminar" style="margin-right: 5px;"><i class="fas fa-trash-alt"></i></button>';
+                            return '<div class="d-flex justify-content-center">' +
+                            '<button class="btn btn-info ver-detalles" style="margin-right: 5px;"><i class="fas fa-eye"></i></button>' +
+                            '<button class="btn btn-warning editar" style="margin-right: 5px;"><i class="fas fa-pencil-alt"></i></button>' +
+                            '<button class="btn btn-danger eliminar" style="margin-right: 5px;"><i class="fas fa-trash-alt"></i></button>' +
+                            '</div>';
                         }
                     },
-                    { data: 'consulta_medica', visible: false }, 
-                    { data: 'especialista', visible: false }, 
-                    { data: 'frecuencia_cardiaca', visible: false }, 
-                    { data: 'frecuencia_respiratoria', visible: false }, 
-                    { data: 'imc', visible: false }, 
-                    { data: 'peso', visible: false }, 
-                    { data: 'presion_arterial', visible: false }, 
-                    { data: 'saturacion', visible: false }, 
-                    { data: 'talla', visible: false }, 
+                    { data: 'consulta_medica', visible: false },
+                    { data: 'especialista', visible: false },
+                    { data: 'frecuencia_cardiaca', visible: false },
+                    { data: 'frecuencia_respiratoria', visible: false },
+                    { data: 'imc', visible: false },
+                    { data: 'peso', visible: false },
+                    { data: 'presion_arterial', visible: false },
+                    { data: 'saturacion', visible: false },
+                    { data: 'talla', visible: false },
                     { data: 'temperatura', visible: false }
                 ],
                 columnDefs: [
@@ -52,76 +43,79 @@ $(document).ready(function() {
                         orderable: false,
                         searchable: false
                     }
-                ]
+                ],
+                scrollX: true,
+                scrollY: 642,
+                language: {
+                    "lengthMenu": "Mostrar _MENU_ entradas por página", // Cambiar nombre de entradas por página
+                    "search": "Buscar:", // Cambiar texto de búsqueda
+                }
             });
 
             // Manejar clics en los botones
-            $(document).ready(function() {
-                // Manejar clics en los botones
-                $('#data_table tbody').on('click', '.ver-detalles', function() {
-                    var data = $('#data_table').DataTable().row($(this).parents('tr')).data();
-                    // Mostrar detalles del paciente en el modal
-                    $('#nombrePaciente').text(data.nombre);
-                    $('#dniPaciente').text(data.dni);
-                    $('#correoPaciente').text(data.correo);
-                    $('#direccionPaciente').text(data.direccion);
-                    $('#telefonoPaciente').text(data.telefono);
-                    $('#generoPaciente').text(data.genero);
-                    $('#fechaNacimientoPaciente').text(data.fecha_nacimiento);
-                    $('#horaRegistroPaciente').text(data.hora_registro);
-                    $('#consultaMedicaPaciente').text(data.consulta_medica);
-                    $('#especialistaPaciente').text(data.especialista);
-                    $('#frecuenciaCardiacaPaciente').text(data.frecuencia_cardiaca);
-                    $('#frecuenciaRespiratoriaPaciente').text(data.frecuencia_respiratoria);
-                    $('#imcPaciente').text(data.imc);
-                    $('#pesoPaciente').text(data.peso);
-                    $('#presionArterialPaciente').text(data.presion_arterial);
-                    $('#saturacionPaciente').text(data.saturacion);
-                    $('#tallaPaciente').text(data.talla);
-                    $('#temperaturaPaciente').text(data.temperatura);
-                    $('#detallesModal').modal('show');
-                });
-            });            
-
-            $(document).ready(function() {
-                // Manejar clics en los botones de editar
-                $('#data_table tbody').on('click', '.editar', function() {
-                    var data = $('#data_table').DataTable().row($(this).parents('tr')).data();
-                    // Lógica para editar
-                    // Actualizar los campos del formulario en el modal con los datos del paciente
-                    $('#nombreEdit').val(data.nombre);
-                    $('#dniEdit').val(data.dni);
-                    $('#correoEdit').val(data.correo);
-                    $('#direccionEdit').val(data.direccion);
-                    $('#telefonoEdit').val(data.telefono);
-                    $('#generoEdit').val(data.genero);
-                    $('#fechaNacimientoEdit').val(data.fecha_nacimiento);
-                    $('#horaRegistroEdit').val(data.hora_registro);
-                    $('#consultaMedicaEdit').val(data.consulta_medica);
-                    $('#especialistaEdit').val(data.especialista);
-                    $('#frecuenciaCardiacaEdit').val(data.frecuencia_cardiaca);
-                    $('#frecuenciaRespiratoriaEdit').val(data.frecuencia_respiratoria);
-                    $('#imcEdit').val(data.imc);
-                    $('#pesoEdit').val(data.peso);
-                    $('#presionArterialEdit').val(data.presion_arterial);
-                    $('#saturacionEdit').val(data.saturacion);
-                    $('#tallaEdit').val(data.talla);
-                    $('#temperaturaEdit').val(data.temperatura);
-                    // Mostrar el modal para editar los datos
-                    $('#editarModal').modal('show');
-                });
+            $('#data_table tbody').on('click', '.ver-detalles', function() {
+                var data = $('#data_table').DataTable().row($(this).parents('tr')).data();
+                // Mostrar detalles del paciente en el modal
+                $('#nombrePaciente').text(data.nombre);
+                $('#dniPaciente').text(data.dni);
+                $('#correoPaciente').text(data.correo);
+                $('#direccionPaciente').text(data.direccion);
+                $('#telefonoPaciente').text(data.telefono);
+                $('#generoPaciente').text(data.genero);
+                $('#fechaNacimientoPaciente').text(data.fecha_nacimiento);
+                $('#horaRegistroPaciente').text(data.hora_registro);
+                $('#consultaMedicaPaciente').text(data.consulta_medica);
+                $('#especialistaPaciente').text(data.especialista);
+                $('#frecuenciaCardiacaPaciente').text(data.frecuencia_cardiaca);
+                $('#frecuenciaRespiratoriaPaciente').text(data.frecuencia_respiratoria);
+                $('#imcPaciente').text(data.imc);
+                $('#pesoPaciente').text(data.peso);
+                $('#presionArterialPaciente').text(data.presion_arterial);
+                $('#saturacionPaciente').text(data.saturacion);
+                $('#tallaPaciente').text(data.talla);
+                $('#temperaturaPaciente').text(data.temperatura);
+                $('#detallesModal').modal('show');
             });
 
+            // Manejar clics en los botones de editar
+            $('#data_table tbody').on('click', '.editar', function() {
+                var data = $('#data_table').DataTable().row($(this).parents('tr')).data();
+                // Lógica para editar
+                // Actualizar los campos del formulario en el modal con los datos del paciente
+                $('#nombreEdit').val(data.nombre);
+                $('#dniEdit').val(data.dni);
+                $('#correoEdit').val(data.correo);
+                $('#direccionEdit').val(data.direccion);
+                $('#telefonoEdit').val(data.telefono);
+                $('#generoEdit').val(data.genero);
+                $('#fechaNacimientoEdit').val(data.fecha_nacimiento);
+                $('#horaRegistroEdit').val(data.hora_registro);
+                $('#consultaMedicaEdit').val(data.consulta_medica);
+                $('#especialistaEdit').val(data.especialista);
+                $('#frecuenciaCardiacaEdit').val(data.frecuencia_cardiaca);
+                $('#frecuenciaRespiratoriaEdit').val(data.frecuencia_respiratoria);
+                $('#imcEdit').val(data.imc);
+                $('#pesoEdit').val(data.peso);
+                $('#presionArterialEdit').val(data.presion_arterial);
+                $('#saturacionEdit').val(data.saturacion);
+                $('#tallaEdit').val(data.talla);
+                $('#temperaturaEdit').val(data.temperatura);
+                // Mostrar el modal para editar los datos
+                $('#editarModal').modal('show');
+            });
+
+            // Manejar clics en los botones de eliminar
             $('#data_table tbody').on('click', '.eliminar', function() {
                 var data = $('#data_table').DataTable().row($(this).parents('tr')).data();
-                    $('#dniDelete').val(data.dni);
-                    $('#horaRegistroDelete').val(data.hora_registro);
-                    // Mostrar el modal para editar los datos
-                    $('#confirmarEliminarModal').modal('show');
+                $('#dniDelete').val(data.dni);
+                $('#horaRegistroDelete').val(data.hora_registro);
+                // Mostrar el modal para confirmar la eliminación
+                $('#confirmarEliminarModal').modal('show');
             });
         }
     });
 });
+
 
 // JavaScript para animar los campos de entrada
 const animatedInputs = document.querySelectorAll('.animated-input');
@@ -235,3 +229,4 @@ inputsAndTextareasAndSelectAndDate.forEach(element => {
             $('#resultado').text(`Error: No se encontró información o hubo un problema con la consulta.`);
         }
     }
+    
