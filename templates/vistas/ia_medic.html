@@ -40,22 +40,27 @@
                 </ul>
             </div>
 
-<!-- Contenido principal -->
-<div class="col-lg-10 col-md-9 col-sm-8" id="contenido">
-    <div id="respuesta" style="padding: 10px;">
-        {% if respuesta %}
-            <div>
-                {{ respuesta | safe }}
+        <!-- Contenido principal -->
+        <div class="col-lg-10 col-md-9 col-sm-8 d-flex flex-column vh-89" id="contenido">
+            <div id="respuesta" class="flex-grow-1" style="padding: 10px;">
+                {% if respuesta %}
+                    <div>
+                        {{ respuesta | safe }}
+                    </div>
+                {% endif %}
             </div>
-        {% endif %}
-    </div>
-    <div>
-        <form action="/ia_medic" method="POST" class="mt-auto" style="width: 50%;">
-            <div class="d-flex justify-content-end mb-3">
-                <input type="text" id="pregunta" name="pregunta" class="form-control form-control-sm rounded-pill me-2" style="padding: 10px 20px;" placeholder="Haz una pregunta relacionada con la medicina...">
-                <button type="submit" class="btn btn-primary btn-sm rounded-pill">Enviar</button>
+            <div class="d-flex justify-content-center">
+                <form action="/ia_medic" method="POST" style="width: 50%;">
+                    <div class="d-flex justify-content-end mb-3">
+                        <input type="text" id="pregunta" name="pregunta" class="form-control form-control-sm rounded-pill me-2" style="padding: 10px 20px;" placeholder="Haz una pregunta relacionada con la medicina...">
+                        <button type="submit" class="btn btn-primary btn-sm rounded-pill">Enviar</button>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
+        
+        
+        
     </div>
 </div>
 
