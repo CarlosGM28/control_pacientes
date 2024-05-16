@@ -11,16 +11,37 @@ body {
 #encabezado {
     background-color: #007bff; /* Cambio de color a azul claro */
     color: #fff;
-    padding: 10px;
+    padding: 0px;
+    width: 100%;
+    
 }
 
 #navegador {
     background-color: #1c2731; /* Nuevo color para el navegador */
     color: #fff;
     padding: 20px;
-    height: auto; /* Restar el tamaño del encabezado */
+    height: 100vh;
     border-right: 2px solid #6c757d;
     overflow-y: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 14.66%; /* Approx 2/12 of the viewport width */
+    max-width: 100vh;
+}
+
+@media (max-width: 768px) {
+    #navegador {
+        width: 100% !important; /* Full width */
+        height: auto !important; /* Auto height */
+        position: relative !important; /* Static position */
+        border-right: none !important;
+        padding: 10px;
+    }
+    #contenido {
+        margin-left: 10px !important; 
+        width: 100% !important;
+    }
 }
 
 #navegador h2 {
@@ -63,9 +84,10 @@ body {
 }
 
 #contenido {
+    margin-left: 14.66%; /* Mismo ancho que el #navegador */
     padding: 20px;
+    width: 85.34%; /* Resto del ancho del viewport */
 }
-
 .custom-label {
     color: #007bff;
     font-weight: bold;

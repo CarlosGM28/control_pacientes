@@ -18,10 +18,11 @@
 </head>
 <body>
     <!-- Encabezado -->
-    <nav id="encabezado" class="navbar navbar-dark">
+    <nav id="encabezado" class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1"><i class="fas fa-hospital"></i> Hospital XYZ</span>
-            <span class="navbar-text" style="color: white; font-size: 17px; font-weight: bold; text-transform: uppercase;">
+            <span></span>
+            <span class="navbar-text"
+                style="color: white; font-size: 17px; font-weight: bold; text-transform: uppercase;">
                 <i class="fas fa-user-circle" style="margin-right: 5px; font-size: 24px;"></i>{{ user_email }}
             </span>
         </div>
@@ -30,15 +31,27 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Navegador -->
-            <div class="col-lg-2 col-md-3 col-sm-4 col-6" id="navegador">
+            <div id="navegador">
                 <ul class="list-unstyled">
-                    <li class="show"><a href="/principal" class="text-decoration-none"><i class="fas fa-user"></i> Pacientes</a></li>
-                    <li class="show"><a href="/citas_medicas" class="text-decoration-none"><i class="far fa-calendar-alt"></i> Citas</a></li>
-                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-chart-bar"></i> Informes</a></li>
-                    <li class="show"><a href="/medico_bot" class="text-decoration-none"><i class="fas fa-stethoscope"></i> Bot Médico</a></li>
-                    <li class="show"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i> Personal Médico</a></li>
-                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-cog"></i> Configuración</a></li>
-                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                    <div id="encabezado-div">
+                        <span class="navbar-brand mb-0 h1"><i class="fas fa-hospital"></i> Hospital XYZ</span>
+                    </div>
+                    <li class="show"><a href="/principal" class="text-decoration-none"><i class="fas fa-user"></i>
+                            Pacientes</a></li>
+                    <li class="show"><a href="/citas_medicas" class="text-decoration-none"><i
+                                class="far fa-calendar-alt"></i> Citas</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-chart-bar"></i>
+                            Informes</a></li>
+                    <li class="show"><a href="/medico_bot" class="text-decoration-none"><i
+                                class="fas fa-stethoscope"></i> Bot Médico</a></li>
+                    <li class="show"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i>
+                            Personal Médico</a></li>
+                    <li class="show"><a href="/mapas_pacientes" class="text-decoration-none"><i class="fas fa-map-marker-alt"></i> 
+                            Mapa Pacientes</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-cog"></i>
+                            Configuración</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-sign-out-alt"></i> Cerrar
+                            Sesión</a></li>
                 </ul>
             </div>
 
@@ -157,9 +170,9 @@
     </div>
 </div>
 
-<footer class="bg-dark text-center text-white fixed-bottom">
-    <div class="container py-3">
-        <div class="row">
+<footer class="bg-dark text-center text-white fixed-bottom" style="height: 45px;">
+    <div class="container h-100 d-flex align-items-center justify-content-center">
+        <div class="row w-100">
             <div class="col-lg-12">
                 &copy; 2024 Creado por Carlos Galloso
             </div>

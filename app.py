@@ -198,6 +198,13 @@ def regis_paciente():
 
 @app.route('/editar_paciente', methods=['POST'])
 def editar_paciente():
+        # Obtener el correo electrónico del usuario autenticado desde la sesión
+    user_email = session.get('user_email')
+
+    # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
+    if not user_email:
+        return redirect('/login')
+    
     tipo_alerta = 'success'
     mensaje_alerta = 'Paciente editado correctamente'
     tipo_registro = 'paciente'
@@ -262,15 +269,21 @@ def editar_paciente():
                 db.child("Pacientes").child(dni).child(registro_key).update(datos_actualizados)
 
                 # Devolver una respuesta JSON indicando el éxito de la operación
-                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
+                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro, user_email=user_email))
             else:
                 tipo_alerta = 'danger'
                 mensaje_alerta = 'Error al editar al paciente'
-                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
+                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro, user_email=user_email))
 
 
 @app.route('/eliminar_paciente', methods=['POST'])
 def eliminar_paciente():
+    # Obtener el correo electrónico del usuario autenticado desde la sesión
+    user_email = session.get('user_email')
+
+    # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
+    if not user_email:
+        return redirect('/login')
     tipo_alerta = 'success'
     mensaje_alerta = 'Paciente eliminado correctamente'
     tipo_registro = 'paciente'
@@ -296,19 +309,19 @@ def eliminar_paciente():
                 db.child("Pacientes").child(dni).child(registro_key).remove()
 
                 # Devolver una respuesta JSON indicando el éxito de la operación
-                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
+                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro,user_email=user_email))
             else:
                 tipo_alerta = 'danger'
                 mensaje_alerta = 'Error al eliminar al paciente'
-                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
+                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro,user_email=user_email))
         else:
             tipo_alerta = 'danger'
             mensaje_alerta = 'Error al eliminar al paciente: No se encontraron registros para el DNI proporcionado'
-            return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
+            return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro,user_email=user_email))
     else:
         tipo_alerta = 'danger'
         mensaje_alerta = 'Error al eliminar al paciente: Método no permitido'
-        return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
+        return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro,))
 
 
 @app.route('/registros_pacientes_medicos', methods=['GET'])
@@ -485,7 +498,7 @@ def medicobot():
 
 @app.route('/registro_reniec')
 def ciudadano():
-        # Obtener el correo electrónico del usuario autenticado desde la sesión
+    # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
 
     # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
@@ -506,6 +519,21 @@ def citas():
 
     # Renderizar la plantilla principal y pasar el correo electrónico del usuario
     return render_template('vistas/citas.html', user_email=user_email)
+
+@app.route('/mapas_pacientes')
+def mapas():
+    # Obtener el correo electrónico del usuario autenticado desde la sesión
+    user_email = session.get('user_email')
+    tipo_alerta = 'success'
+    mensaje_alerta = 'Paciente editado correctamente'
+    
+    # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
+    if not user_email:
+        return redirect('/login')
+    
+
+    
+    return render_template('vistas/mapa_pacientes.html', user_email=user_email)
 
 @app.route('/consultas')
 def reniec():

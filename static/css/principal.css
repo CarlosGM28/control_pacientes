@@ -88,3 +88,89 @@ tr:nth-child(odd) {
 #example_wrapper {
     margin: 20px;
 }
+.list-unstyled {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.list-unstyled li {
+    margin-bottom: 10px;
+}
+
+.text-decoration-none {
+    text-decoration: none;
+    color: #fff;
+}
+
+.text-decoration-none:hover {
+    color: #adb5bd;
+}
+
+#calendario {
+    margin: 0 auto;
+    /* Centrado horizontalmente */
+    width: 100%;
+    /* Ancho completo */
+    height: 82vh;
+    /* Altura del 80% del viewport */
+    max-width: 1400px;
+    /* Ancho máximo */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#encabezado-div {
+    font-size: large;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Alineación horizontal al centro */
+    transition: all 0.3s ease;
+    /* Transición suave */
+    position: relative;
+    /* Posicionamiento relativo */
+    top: -10px;
+    /* Mover hacia arriba */
+    text-align: center;
+}
+
+#encabezado-div:hover {
+    transform: translateY(-5px);
+    /* Desplazamiento hacia arriba al pasar el cursor */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    /* Sombra más pronunciada */
+}
+
+#encabezado-div .navbar-brand {
+    color: #1c2731;
+}
+
+th:empty {
+    display: none;
+} 
+
+.form-wrapper {
+    width: 50%;
+    margin: 0 auto;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+    .form-wrapper {
+        width: 90%;
+    }
+}

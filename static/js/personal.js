@@ -127,3 +127,51 @@ inputsAndTextareasAndSelectAndDate.forEach(element => {
         }
     });
 });
+
+// Función para cargar la API de Google Maps
+(function() {
+  var script = document.createElement("script");
+  script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDlWgApK6mth70OIyxMvQjpvRvA5dAaX5c"; // Reemplaza 'YOUR_API_KEY' con tu propia clave de API
+  script.defer = true;
+  script.onload = initMap; // Llamar a initMap una vez que la API de Google Maps se haya cargado
+  document.head.appendChild(script);
+})();
+
+// Función para inicializar el mapa y agregar el evento clic para mostrar el modal
+function initMap() {
+  var mapDiv = document.getElementById("map");
+  var map = new google.maps.Map(mapDiv, { 
+    center: {lat: -8.3895368, lng: -74.5755113}, // Coordenadas de ejemplo
+    zoom: 14 // Nivel de zoom de ejemplo
+  });
+
+  // Agregar evento clic al mapa
+  map.addListener('click', function(event) {
+      console.log("Clic en el mapa:", event.latLng); // Imprimir la ubicación en la consola
+      showModal(event.latLng);
+  });
+
+}
+
+// Función para mostrar el modal con la ubicación donde se hizo clic
+function showModal(latLng) {
+  var modal = document.getElementById("myModal");
+  var span = document.getElementsByClassName("close")[0];
+  modal.style.display = "block";
+
+  // Cuando el usuario hace clic en (x), cierra el modal
+  span.onclick = function() {
+      modal.style.display = "none";
+  }
+
+  // Cuando el usuario hace clic fuera del modal, cierra el modal
+  window.onclick = function(event) {
+      if (event.target == modal) {
+          modal.style.display = "none";
+      }
+  }
+
+  // Rellenar los campos del formulario con la ubicación
+  document.getElementById('latitud').value = latLng.lat();
+  document.getElementById('logitud').value = latLng.lng();
+}
