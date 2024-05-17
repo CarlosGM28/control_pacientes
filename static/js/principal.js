@@ -16,7 +16,13 @@ $(document).ready(function() {
                     { data: 'genero' },
                     { data: 'fecha_nacimiento' },
                     { data: 'hora_registro' },
-                    { data: 'estado' },
+                    {
+                        data: 'estado',
+                        render: function(data, type, row) {
+                            let colorClass = data === 'Pendiente' ? 'btn-warning' : data === 'Atendido' ? 'btn-success' : '';
+                            return `<button class="btn ${colorClass}" disabled>${data}</button>`;
+                        }
+                    },
                     {
                      data: null,
                         render: function(data, type, row) {
