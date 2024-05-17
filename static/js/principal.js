@@ -16,6 +16,7 @@ $(document).ready(function() {
                     { data: 'genero' },
                     { data: 'fecha_nacimiento' },
                     { data: 'hora_registro' },
+                    { data: 'estado' },
                     {
                      data: null,
                         render: function(data, type, row) {
@@ -170,63 +171,3 @@ inputsAndTextareasAndSelectAndDate.forEach(element => {
         }
     });
 });
-
-
-    // El token JWT
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOTkiLCJuYW1lIjoiY2FybG9zTW9yaTI4IiwiZW1haWwiOiJjZWdtY2FybG9zOTg3QGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImNvbnN1bHRvciJ9.lOQWVQhrxupKVNlJLRu2Xdsai7mfPuDD3Vcc-lixqP8';
-
-    // URL base de la API
-    const baseUrl = 'https://api.factiliza.com/pe/v1/';
-
-    // Función para realizar la consulta a la API usando AJAX
-    function consultarDNI(dni) {
-        // Construye la URL de la API
-        const url = `${baseUrl}dni/info/${dni}`;
-
-        // Realiza la solicitud AJAX
-        $.ajax({
-            url: url,
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            success: function(datos) {
-                mostrarResultado(datos);
-            },
-            error: function(xhr, status, error) {
-                $('#resultado').text(`Error: ${xhr.status} - ${xhr.statusText}`);
-            }
-        });
-    }
-
-    // Añade un evento de envío al formulario
-    $('#consultaForm').on('submit', function(event) {
-        // Evita el envío del formulario por defecto
-        event.preventDefault();
-
-        // Obtiene el valor del campo DNI
-        const dni = $('#dniRellenar').val();
-
-        // Llama a la función de consulta con el DNI como valor
-        consultarDNI(dni);
-    });
-
-    // Función para mostrar los resultados de la consulta
-    function mostrarResultado(datos) {
-        if (datos.status === 200 && datos.message === 'Exito') {
-            const data = datos.data;
-
-            // Eliminar las comas del nombre
-            const nombreSinComas = data.nombre_completo.replace(/,/g, '');
-
-            // Actualizar campos específicos del formulario
-            $('#dni').val(data.numero);
-            $('#nombre').val(nombreSinComas);
-            $('#direccion').val(data.direccion_completa);
-
-        } else {
-            $('#resultado').text(`Error: No se encontró información o hubo un problema con la consulta.`);
-        }
-    }
-    

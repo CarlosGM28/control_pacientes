@@ -89,6 +89,7 @@ def pacientes():
     tipo_alerta = 'success'
     mensaje_alerta = 'Paciente registrado correctamente'
     tipo_registro = 'paciente'
+    estado = 'Pendiente'
 
     nombre = request.form['nombre']
     dni = request.form['dni']
@@ -108,6 +109,8 @@ def pacientes():
     frecuencia_cardiaca = request.form['frecuencia_cardiaca']
     imc = request.form['imc']
     fecha_cita = request.form['fecha_cita']
+    latitud = request.form['latitud']
+    logitud = request.form['logitud']
 
     try:
 
@@ -132,7 +135,10 @@ def pacientes():
             'frecuencia_cardiaca': frecuencia_cardiaca,
             'imc': imc,
             'hora_registro': hora_actual,
-            'fecha_cita': fecha_cita
+            'fecha_cita': fecha_cita,
+            'estado': estado,
+            'lat': latitud,
+            'lng': logitud
 
         })
 
@@ -185,7 +191,10 @@ def regis_paciente():
                     'saturacion': paciente.get('saturacion', ''),
                     'talla': paciente.get('talla', ''),
                     'telefono': paciente.get('telefono', ''),
-                    'temperatura': paciente.get('temperatura', '')
+                    'temperatura': paciente.get('temperatura', ''),
+                    'estado': paciente.get('estado', ''),
+                    'lat': paciente.get('lat', ''),
+                    'lng': paciente.get('lng', '')
                 }
                 datos_pacientes.append(datos_paciente)
         else:
@@ -534,6 +543,11 @@ def mapas():
 
     
     return render_template('vistas/mapa_pacientes.html', user_email=user_email)
+
+@app.route('/pruebamapas')
+def mapas_prueba():
+
+    return render_template('vistas/mapas_prueba.html')
 
 @app.route('/consultas')
 def reniec():

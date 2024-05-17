@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mapa con Marcadores y Datos en Array</title>
+  <style>
+    #map {
+      height: 500px;
+      width: 100%;
+    }
+    /* Estilos para el modal */
+    #myModal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4);
+      padding-top: 60px;
+    }
+    #myModal .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+    #myModal .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    #myModal .close:hover,
+    #myModal .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <!-- Modal -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <form>
+        <label for="latitud">Latitud:</label>
+        <input type="text" id="latitud" name="latitud" readonly><br><br>
+        <label for="logitud">Longitud:</label>
+        <input type="text" id="logitud" name="logitud" readonly><br><br>
+      </form>
+    </div>
+  </div>
+  <script>
+    // Función para cargar la API de Google Maps
+    (function() {
+      var script = document.createElement("script");
+      script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDlWgApK6mth70OIyxMvQjpvRvA5dAaX5c";
+      script.defer = true;
+      script.onload = initMap;
+      document.head.appendChild(script);
+    })();
+
+    // Función para inicializar el mapa
+    function initMap() {
+      var mapDiv = document.getElementById("map");
+      var map = new google.maps.Map(mapDiv, { 
+        center: {lat: -8.3895368, lng: -74.5755113},
+        zoom: 14
+      });
+
+      // Datos de marcadores en un array
+      var locations = [
+        {
+          lat: -8.3895368,
+          lng: -74.5755113,
+          title: "Marcador 1",
+          description: "Información adicional para el marcador 1.",
+          image: "url_de_la_imagen_1.jpg"
+        },
+        {
+          lat: -8.3905368,
+          lng: -74.5765113,
+          title: "Marcador 2",
+          description: "Más información para el marcador 2.",
+          image: "url_de_la_imagen_2.jpg"
+        },
+        {
+          lat: -8.3915368,
+          lng: -74.5775113,
+          title: "Marcador 3",
+          description: "Otra información para el marcador 3.",
+          image: "url_de_la_imagen_3.jpg"
+        }
+      ];
+
+      // Añadir marcadores al mapa
+      locations.forEach(function(location) {
+        addMarker(location, map);
+      });
+
+      // Agregar evento clic al mapa
+      map.addListener('click', function(event) {
+        console.log("Clic en el mapa:", event.latLng);
+        showModal(event.latLng);
+      });
+    }
+
+    // Función para agregar un marcador al mapa
+    function addMarker(location, map) {
+      var marker = new google.maps.Marker({
+        position: {lat: location.lat, lng: location.lng},
+        map: map,
+        title: location.title // Añadir el título al marcador
+      });
+
+      var infoWindowContent = `
+        <div>
+          <h2>${location.title}</h2>
+          <p>${location.description}</p>
+          <img src="${location.image}" alt="${location.title}" style="width:100px;height:auto;">
+        </div>
+      `;
+
+      var infoWindow = new google.maps.InfoWindow({
+        content: infoWindowContent
+      });
+
+      marker.addListener('click', function() {
+        infoWindow.open(map, marker);
+      });
+    }
+
+    // Función para mostrar el modal con la ubicación donde se hizo clic
+    function showModal(latLng) {
+      var modal = document.getElementById("myModal");
+      var span = document.getElementsByClassName("close")[0];
+      modal.style.display = "block";
+
+      span.onclick = function() {
+          modal.style.display = "none";
+      }
+
+      window.onclick = function(event) {
+          if (event.target == modal) {
+              modal.style.display = "none";
+          }
+      }
+
+      document.getElementById('latitud').value = latLng.lat();
+      document.getElementById('logitud').value = latLng.lng();
+    }
+  </script>
+</body>
+</html>

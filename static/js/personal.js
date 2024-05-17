@@ -145,13 +145,68 @@ function initMap() {
     zoom: 14 // Nivel de zoom de ejemplo
   });
 
-  // Agregar evento clic al mapa
-  map.addListener('click', function(event) {
-      console.log("Clic en el mapa:", event.latLng); // Imprimir la ubicación en la consola
-      showModal(event.latLng);
+  // Cargar datos de marcadores usando AJAX
+  $.ajax({
+    url: '/registros_pacientes',
+    type: "GET",
+    dataType: 'json', // Asegurarse de que jQuery interprete la respuesta como JSON
+    success: function(data) {
+      console.log('Datos recibidos:', data); // Verifica la estructura de los datos
+      if (Array.isArray(data.datos)) {
+        data.datos.forEach(function(location) {
+          addMarker(location, map);
+        });
+      } else {
+        console.error('La respuesta no contiene datos válidos:', data);
+      }
+    },
+    error: function(error) {
+      console.error('Error al cargar los datos:', error);
+    }
   });
 
+  // Agregar evento clic al mapa
+  map.addListener('click', function(event) {
+    console.log("Clic en el mapa:", event.latLng);
+    showModal(event.latLng);
+  });
 }
+
+// Función para agregar un marcador al mapa
+function addMarker(location, map) {
+    // Verificar si el estado es "Pendiente"
+    if (location.estado !== "Pendiente") {
+      return; // Si el estado no es "Pendiente", no agregar el marcador
+    }
+  
+    var marker = new google.maps.Marker({
+      position: {lat: parseFloat(location.lat), lng: parseFloat(location.lng)},
+      map: map,
+      title: location.nombre // Añadir el título al marcador
+    });
+  
+    var infoWindowContent = `
+    <div style="background-color: #fff; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 10px; max-width: 300px;">
+      <h2 style="font-size: 18px; margin-bottom: 10px;">${location.nombre}</h2>
+      <p style="margin-bottom: 5px;"><strong>DNI:</strong> ${location.dni}</p>
+      <p style="margin-bottom: 5px;"><strong>Correo:</strong> ${location.correo}</p>
+      <p style="margin-bottom: 5px;"><strong>Dirección:</strong> ${location.direccion}</p>
+      <p style="margin-bottom: 5px;"><strong>Teléfono:</strong> ${location.telefono}</p>
+      <p style="margin-bottom: 5px;"><strong>Consulta Médica:</strong> ${location.consulta_medica}</p>
+      <p style="margin-bottom: 5px;"><strong>Estado:</strong> ${location.estado}</p>
+      <p style="margin-bottom: 5px;"><strong>Fecha de Cita:</strong> ${location.fecha_cita}</p>
+      <!-- Agregar más campos según sea necesario -->
+    </div>
+  `;
+  
+    var infoWindow = new google.maps.InfoWindow({
+      content: infoWindowContent
+    });
+  
+    marker.addListener('click', function() {
+      infoWindow.open(map, marker);
+    });
+  }  
 
 // Función para mostrar el modal con la ubicación donde se hizo clic
 function showModal(latLng) {
@@ -175,3 +230,63 @@ function showModal(latLng) {
   document.getElementById('latitud').value = latLng.lat();
   document.getElementById('logitud').value = latLng.lng();
 }
+
+
+
+    // El token JWT
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOTkiLCJuYW1lIjoiY2FybG9zTW9yaTI4IiwiZW1haWwiOiJjZWdtY2FybG9zOTg3QGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImNvbnN1bHRvciJ9.lOQWVQhrxupKVNlJLRu2Xdsai7mfPuDD3Vcc-lixqP8';
+
+    // URL base de la API
+    const baseUrl = 'https://api.factiliza.com/pe/v1/';
+
+    // Función para realizar la consulta a la API usando AJAX
+    function consultarDNI(dni) {
+        // Construye la URL de la API
+        const url = `${baseUrl}dni/info/${dni}`;
+
+        // Realiza la solicitud AJAX
+        $.ajax({
+            url: url,
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            success: function(datos) {
+                mostrarResultado(datos);
+            },
+            error: function(xhr, status, error) {
+                $('#resultado').text(`Error: ${xhr.status} - ${xhr.statusText}`);
+            }
+        });
+    }
+
+    // Añade un evento de envío al formulario
+    $('#consultaForm').on('submit', function(event) {
+        // Evita el envío del formulario por defecto
+        event.preventDefault();
+
+        // Obtiene el valor del campo DNI
+        const dni = $('#dniRellenar').val();
+
+        // Llama a la función de consulta con el DNI como valor
+        consultarDNI(dni);
+    });
+
+    // Función para mostrar los resultados de la consulta
+    function mostrarResultado(datos) {
+        if (datos.status === 200 && datos.message === 'Exito') {
+            const data = datos.data;
+
+            // Eliminar las comas del nombre
+            const nombreSinComas = data.nombre_completo.replace(/,/g, '');
+
+            // Actualizar campos específicos del formulario
+            $('#dni').val(data.numero);
+            $('#nombre').val(nombreSinComas);
+            $('#direccion').val(data.direccion_completa);
+
+        } else {
+            $('#resultado').text(`Error: No se encontró información o hubo un problema con la consulta.`);
+        }
+    }

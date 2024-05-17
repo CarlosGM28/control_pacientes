@@ -1,0 +1,23 @@
+[
+    {
+      "lat": -8.3895368,
+      "lng": -74.5755113,
+      "title": "Marcador 1",
+      "description": "Información adicional para el marcador 1.",
+      "image": "url_de_la_imagen_1.jpg"
+    },
+    {
+      "lat": -8.3905368,
+      "lng": -74.5765113,
+      "title": "Marcador 2",
+      "description": "Más información para el marcador 2.",
+      "image": "url_de_la_imagen_2.jpg"
+    },
+    {
+      "lat": -8.3915368,
+      "lng": -74.5775113,
+      "title": "Marcador 3",
+      "description": "Otra información para el marcador 3.",
+      "image": "url_de_la_imagen_3.jpg"
+    }
+  ]
