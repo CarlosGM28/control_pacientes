@@ -379,24 +379,35 @@ def login():
         password = request.form['password']
 
         try:
-            # Intentar iniciar sesión con el correo electrónico y la contraseña proporcionados
+            # Attempt to sign in with the provided email and password
             user_cred = auth.sign_in_with_email_and_password(email, password)
 
-            # Obtener el correo electrónico del usuario autenticado
+            # Get the authenticated user's email
             user_email = user_cred['email']
 
-            # Almacenar el correo electrónico del usuario en la sesión de forma global
+            # Store the user's email in the session
             session['user_email'] = user_email
 
-            # Redirigir al usuario a la página principal
+            # Redirect the user to the main page
             return redirect('/principal')
         except Exception as e:
-            # Si ocurre un error de autenticación, mostrar un mensaje de error al usuario
-            error_message = str(e)
-            print('Error de autenticación:', error_message)
-            return render_template('index.html', error=error_message)
+            # Default alert type and message
+            tipo_alerta = 'danger'
+            mensaje_alerta = 'Error desconocido'
 
-    # Si la solicitud es GET, renderizar la plantilla de inicio de sesión
+            error_str = str(e)
+            if "EMAIL_NOT_FOUND" in error_str:
+                mensaje_alerta = 'Email Incorrecto'
+            elif "INVALID_PASSWORD" in error_str:
+                mensaje_alerta = 'Contraseña Incorrecta'
+            elif "USER_DISABLED" in error_str:
+                mensaje_alerta = 'Cuenta Deshabilitada'
+            else:
+                mensaje_alerta = 'Correo o Contraseña es Incorrecta'
+            # Render the login template with the error message
+            return render_template('index.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
+
+    # If the request is GET, render the login template
     return render_template('index.html')
 
 @app.route('/logout')
