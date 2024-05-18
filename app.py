@@ -45,7 +45,7 @@ def prueba():
 
 @app.route('/registrar_personal', methods=['POST'])
 def signup():
-
+    estado = 'Activo'
     tipo_alerta = 'success'
     mensaje_alerta = 'Personal registrado correctamente'
     tipo_registro = 'personal'
@@ -74,7 +74,8 @@ def signup():
             'genero': genero,
             'rol': rol,
             'email': email,
-            'hora_actual': hora_actual
+            'hora_actual': hora_actual,
+            'estado':estado
         })
 
         return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
@@ -163,6 +164,8 @@ def mostrar_alerta(tipo_alerta, mensaje_alerta, tipo_registro):
         return render_template('vistas/register.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, user_email=user_email)
     elif tipo_registro == 'paciente':
         return render_template('principal.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, user_email=user_email)
+    elif tipo_registro == 'personal':
+        return render_template('vistas/register.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, user_email=user_email)
 
 @app.route('/registros_pacientes', methods=['GET'])
 def regis_paciente():
@@ -296,8 +299,62 @@ def editar_paciente():
                 mensaje_alerta = 'Error al editar al paciente'
                 return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro, user_email=user_email))
 
+@app.route('/editar_personal', methods=['POST'])
+def editar_personal():
+    # Obtener el correo electrónico del usuario autenticado desde la sesión
+    user_email = session.get('user_email')
 
-@app.route('/eliminar_paciente', methods=['POST'])
+    # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
+    if not user_email:
+        return redirect('/login')
+
+    tipo_alerta = 'success'
+    mensaje_alerta = 'Personal editado correctamente'
+    tipo_registro = 'personal'
+
+    if request.method == 'POST':
+        # Obtener los datos del formulario de edición
+        dni = request.form['dniEditar']
+        nombre = request.form['nombreEditar']
+        email = request.form['emailEditar']
+        telefono = request.form['telefonoEditar']
+        genero = request.form['generoEditar']
+        especialidad = request.form['especialidadEditar']
+        rol = request.form['rolEditar']
+        estado = request.form['estadoEditar']
+
+        # Realizar una consulta en la base de datos utilizando el DNI
+        personal_data = db.child("personal").child(dni).get().val()
+
+        if personal_data:
+            # Actualizar los datos del personal médico en la base de datos
+            db.child("personal").child(dni).update({
+                "nombre": nombre,
+                "email": email,
+                "telefono": telefono,
+                "genero": genero,
+                "especialidad": especialidad,
+                "rol": rol,
+                "estado": estado,
+            })
+        else:
+            tipo_alerta = 'danger'
+            mensaje_alerta = 'Personal no encontrado'
+    
+    return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro, user_email=user_email))
+        
+@app.route('/eliminar_personal', methods=['POST'])
+def eliminar_personal():
+    user_email = session.get('user_email')
+
+    # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
+    if not user_email:
+        return redirect('/login')
+    tipo_alerta = 'success'
+    mensaje_alerta = 'Paciente eliminado correctamente'
+    tipo_registro = 'paciente'
+
+@app.route('/eliminar_personal', methods=['POST'])
 def eliminar_paciente():
     # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
@@ -364,7 +421,8 @@ def registro_personal_madico():
             'genero': personal_data.get('genero', ''),
             'rol': personal_data.get('rol', ''),
             'email': personal_data.get('email', ''),
-            'hora_actual': personal_data.get('hora_actual', '')
+            'hora_actual': personal_data.get('hora_actual', ''),
+            'estado': personal_data.get('estado', '')
         }
         datos_personal.append(datos_personal_medico)
 

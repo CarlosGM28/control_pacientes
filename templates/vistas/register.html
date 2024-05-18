@@ -76,6 +76,7 @@
                             <th>Rol</th>
                             <th>Registro</th>
                             <th>Genero</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -169,6 +170,80 @@
         </div>
     </div>
 </div>
+
+ <!-- Modal para editar personal médico -->
+<div class="modal fade" id="modal_personal_editar" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="editarModalLabel">Editar Personal Médico</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editar_form" action="/editar_personal" method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-container">
+                                <input type="text" id="nombreEditar" name="nombreEditar" class="form-control custom-input" required pattern="[A-Za-z\s]+" title="El nombre debe contener solo letras y espacios">
+                                <label for="nombreEditar" class="custom-label">Nombre Completo</label>
+                            </div>
+                            <div class="input-container">
+                                <input type="text" id="dniEditar" name="dniEditar" class="form-control custom-input" required pattern="[0-9]{8}" title="El DNI debe contener solo 8 números">
+                                <label for="dniEditar" class="custom-label">DNI</label>
+                            </div>
+                            <div class="input-container">
+                                <select id="generoEditar" name="generoEditar" class="form-select form-select-lg custom-input" required>
+                                    <option value=""></option>
+                                    <option value="masculino">Masculino</option>
+                                    <option value="femenino">Femenino</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                                <label for="generoEditar" class="custom-label">Género</label>
+                            </div>
+                            <div class="input-container">
+                                <input type="email" id="emailEditar" name="emailEditar" class="form-control custom-input" required title="Ingrese un correo electrónico válido">
+                                <label for="emailEditar" class="custom-label">Correo Electrónico</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-container">
+                                <input type="tel" id="telefonoEditar" name="telefonoEditar" class="form-control custom-input" required pattern="[0-9]{1,9}" title="El teléfono debe contener solo números y tener máximo 9 caracteres" maxlength="9">
+                                <label for="telefonoEditar" class="custom-label">Teléfono</label>
+                            </div>
+                            <div class="input-container">
+                                <input type="text" id="especialidadEditar" name="especialidadEditar" class="form-control custom-input" required title="Ingrese una especialidad válida">
+                                <label for="especialidadEditar" class="custom-label">Especialidad</label>
+                            </div>
+                            <div class="input-container">
+                                <select id="rolEditar" name="rolEditar" class="form-select form-select-lg custom-input" required>
+                                    <option value=""></option>
+                                    <option value="administrador">Administrador</option>
+                                    <option value="medico">Médico</option>
+                                    <option value="enfermera">Enfermera/o</option>
+                                    <option value="recepcionista">Recepcionista</option>
+                                </select>
+                                <label for="rolEditar" class="custom-label">Rol</label>
+                            </div>
+                            <div class="input-container">
+                                <select id="estadoEditar" name="estadoEditar" class="form-select form-select-lg custom-input" required>
+                                    <option value=""></option>
+                                    <option value="Activo">Activo</option>
+                                    <option value="Desabilitado">Desabilitado</option>
+                                </select>
+                                <label for="estadoEditar" class="custom-label">Estado</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <!-- Modal de confirmación para cerrar sesión -->
 <div class="modal fade" id="confirmarCerrarSesionModal" tabindex="-1" aria-labelledby="confirmarCerrarSesionModalLabel" aria-hidden="true">

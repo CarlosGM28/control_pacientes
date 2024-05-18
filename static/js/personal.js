@@ -26,6 +26,7 @@ $(document).ready(function() {
                     { data: 'rol' },
                     { data: 'hora_actual' },
                     { data: 'genero' },
+                    { data: 'estado' },
                     {
                      data: null,
                         render: function(data, type, row) {
@@ -59,10 +60,20 @@ $(document).ready(function() {
                 console.log('Detalles del paciente:', data);
             });
 
+            // Manejar clics en los botones de editar
             $('#data_table tbody').on('click', '.editar', function() {
                 var data = $('#data_table').DataTable().row($(this).parents('tr')).data();
-                // Lógica para editar
-                console.log('Editar paciente:', data);
+                // Actualizar los campos del formulario en el modal con los datos del paciente
+                $('#nombreEditar').val(data.nombre);
+                $('#dniEditar').val(data.dni);
+                $('#emailEditar').val(data.email);
+                $('#telefonoEditar').val(data.telefono);
+                $('#generoEditar').val(data.genero);
+                $('#especialidadEditar').val(data.especialidad);
+                $('#rolEditar').val(data.rol);
+                $('#estadoEditar').val(data.estado);
+                // Mostrar el modal para editar los datos
+                $('#modal_personal_editar').modal('show');
             });
 
             $('#data_table tbody').on('click', '.eliminar', function() {
