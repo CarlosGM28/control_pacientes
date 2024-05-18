@@ -83,7 +83,7 @@
 
                 <!-- Alerta -->
                 {% if tipo_alerta %}
-                <div id="alerta" class="alert alert-{{ tipo_alerta }} alert-dismissible fade show position-fixed bottom-0 end-0" role="alert" style="width: 17%;">
+                <div id="alerta" class="alert alert-{{ tipo_alerta }} alert-dismissible fade show position-fixed bottom-0 end-0" role="alert" style="width: 20%; bottom: 50px !important;">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>{{ mensaje_alerta }}</div>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -166,6 +166,22 @@
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación para cerrar sesión -->
+<div class="modal fade" id="confirmarCerrarSesionModal" tabindex="-1" aria-labelledby="confirmarCerrarSesionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="confirmarCerrarSesionModalLabel">Confirmar Cierre de Sesión</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a href="/logout" class="btn btn-danger">Cerrar Sesión</a>
+            </div>
         </div>
     </div>
 </div>

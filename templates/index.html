@@ -39,6 +39,21 @@
             </div>
         </div>
     </div>
+    {% if tipo_alerta %}
+    <div id="alerta" class="alert alert-{{ tipo_alerta }} alert-dismissible fade show position-fixed bottom-0 end-0" role="alert" style="width: 20%; bottom: 50px !important;">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>{{ mensaje_alerta }}</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <script>
+        // Ocultar la alerta después de 5 segundos
+        setTimeout(function() {
+            var alerta = document.getElementById('alerta');
+            alerta.classList.remove('show');
+        }, 5000);
+    </script>
+    {% endif %}
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Vincula tu archivo JS -->

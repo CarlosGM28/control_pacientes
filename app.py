@@ -152,10 +152,17 @@ def pacientes():
 
 @app.route('/mostrar_alerta/<tipo_alerta>/<mensaje_alerta>/<tipo_registro>')
 def mostrar_alerta(tipo_alerta, mensaje_alerta, tipo_registro):
+    # Obtener el correo electrónico del usuario autenticado desde la sesión
+    user_email = session.get('user_email')
+
+    # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
+    if not user_email:
+        return redirect('/login')
+        
     if tipo_registro == 'personal':
-        return render_template('vistas/register.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
+        return render_template('vistas/register.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, user_email=user_email)
     elif tipo_registro == 'paciente':
-        return render_template('principal.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
+        return render_template('principal.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, user_email=user_email)
 
 @app.route('/registros_pacientes', methods=['GET'])
 def regis_paciente():
@@ -252,7 +259,9 @@ def editar_paciente():
                 frecuencia_cardiaca = request.form['frecuenciaCardiacaEdit']
                 imc = request.form['imcEdit']
                 hora_registro = request.form['horaRegistroEdit']
-
+                estado = request.form['estadoEdit']
+                lat = request.form['latEditar']
+                lng = request.form['lngEditar']
                 # Crear un diccionario con los datos actualizados
                 datos_actualizados = {
                     "nombre": nombre,
@@ -271,7 +280,10 @@ def editar_paciente():
                     "talla": talla,
                     "frecuencia_cardiaca": frecuencia_cardiaca,
                     "imc": imc,
-                    "hora_registro": hora_registro
+                    "hora_registro": hora_registro,
+                    'estado': estado,
+                    'lat': lat,
+                    'lng': lng
                 }
 
                 # Actualizar los datos en Firebase utilizando la clave autogenerada
@@ -387,6 +399,11 @@ def login():
     # Si la solicitud es GET, renderizar la plantilla de inicio de sesión
     return render_template('index.html')
 
+@app.route('/logout')
+def logout():
+    session.clear()  # Destruye la sesión
+    return redirect(url_for('index'))  # Redirige al usuario a la página de inicio de sesión o a otra página
+
 @app.route('/ia_medic', methods=['GET', 'POST'])
 def iamedic():
     # Asigna tu clave de API a una variable de entorno
@@ -459,15 +476,6 @@ def iamedic():
         return render_template('vistas/ia_medic.html', respuesta=respuesta)
     elif request.method == 'GET':
         return render_template('vistas/ia_medic.html')
-
-
-@app.route('/logout')
-def logout():
-    # Eliminar el ID de usuario de la sesión
-    session.pop('user_id', None)
-
-    # Redirigir al usuario a la página de inicio
-    return redirect(url_for('index'))
 
 @app.route('/principal')
 def principal():

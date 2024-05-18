@@ -19,7 +19,7 @@ $(document).ready(function() {
                     {
                         data: 'estado',
                         render: function(data, type, row) {
-                            let colorClass = data === 'Pendiente' ? 'btn-warning' : data === 'Atendido' ? 'btn-success' : '';
+                            let colorClass = data === 'Pendiente' ? 'btn-warning' : data === 'Atendido' ? 'btn-success' : data === 'Reprogramar' ? 'btn-danger': '';
                             return `<button class="btn ${colorClass}" disabled>${data}</button>`;
                         }
                     },
@@ -81,6 +81,9 @@ $(document).ready(function() {
                 $('#saturacionPaciente').text(data.saturacion);
                 $('#tallaPaciente').text(data.talla);
                 $('#temperaturaPaciente').text(data.temperatura);
+                $('#estadoPaciente').text(data.estado);
+                $('#latPaciente').text(data.lat);
+                $('#lngPaciente').text(data.lng);
                 $('#detallesModal').modal('show');
             });
 
@@ -107,6 +110,9 @@ $(document).ready(function() {
                 $('#saturacionEdit').val(data.saturacion);
                 $('#tallaEdit').val(data.talla);
                 $('#temperaturaEdit').val(data.temperatura);
+                $('#estadoEdit').val(data.estado);
+                $('#latEditar').val(data.lat);
+                $('#lngEditar').val(data.lng);
                 // Mostrar el modal para editar los datos
                 $('#editarModal').modal('show');
             });
