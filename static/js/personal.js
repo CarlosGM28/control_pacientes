@@ -46,7 +46,7 @@ $(document).ready(function() {
                     }
                 ],
                 scrollX: true,
-                scrollY: 642,
+                scrollY: true,
                 language: {
                     "lengthMenu": "Mostrar _MENU_ entradas por página", // Cambiar nombre de entradas por página
                     "search": "Buscar:", // Cambiar texto de búsqueda

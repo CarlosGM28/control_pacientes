@@ -44,14 +44,22 @@
                             Informes</a></li>
                     <li class="show"><a href="/medico_bot" class="text-decoration-none"><i
                                 class="fas fa-stethoscope"></i> Bot Médico</a></li>
+                    {% if rol == 'administrador' %}
                     <li class="show"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i>
                             Personal Médico</a></li>
+                    {% else %}
+                    <li class="show" style="display:none;"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i>
+                            Personal Médico</a></li>
+                    {% endif %} 
                     <li class="show"><a href="/mapas_pacientes" class="text-decoration-none"><i class="fas fa-map-marker-alt"></i> 
                             Mapa Pacientes</a></li>
                     <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-cog"></i>
                             Configuración</a></li>
-                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-sign-out-alt"></i> Cerrar
-                            Sesión</a></li>
+                    <li class="show">
+                        <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#confirmarCerrarSesionModal">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </a>
+                    </li> 
                 </ul>
             </div>
 
@@ -244,6 +252,22 @@
     </div>
 </div>
 
+
+<!-- Modal de confirmación para cerrar sesión -->
+<div class="modal fade" id="confirmarCerrarSesionModal" tabindex="-1" aria-labelledby="confirmarCerrarSesionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="confirmarCerrarSesionModalLabel">Confirmar Cierre de Sesión</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a href="/logout" class="btn btn-danger">Cerrar Sesión</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal de confirmación para cerrar sesión -->
 <div class="modal fade" id="confirmarCerrarSesionModal" tabindex="-1" aria-labelledby="confirmarCerrarSesionModalLabel" aria-hidden="true">

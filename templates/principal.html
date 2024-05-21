@@ -11,52 +11,114 @@
  <!-- DataTables CSS -->
  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.1/font/bootstrap-icons.min.css" rel="stylesheet">
 
  <!-- CSS personalizado -->
  <link rel="stylesheet" href="{{ url_for('static', filename='css/personal.css') }}">
  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
+ <style>
+    #navegador {
+        width: 250px;
+        transition: width 0.3s;
+    }
+    #navegador.collapsed {
+        width: 0;
+        overflow: hidden;
+    }
+    @media (max-width: 768px) {
+        #navegador {
+            position: absolute;
+            height: 100%;
+            z-index: 1000;
+        }
+    }
+    .navbar-toggler {
+        margin-left: auto;
+    }
+    #navegador.collapsed {
+    width: 50px; /* Ancho reducido cuando está colapsado */
+    overflow: hidden; /* Ocultar contenido adicional */
+}
+
+/* Estilos personalizados para el botón hamburguesa */
+#toggleBtn {
+    background-color: #1c2731; /* Cambia el color de fondo */
+    border: none; /* Sin borde */
+    padding: 8px 10px; /* Espaciado interno */
+    cursor: pointer; /* Cambia el cursor */
+    transition: transform 0.3s ease; /* Transición para la animación */
+}
+
+#toggleBtn .bi-list {
+    transition: transform 0.3s ease; /* Transición para el icono */
+}
+
+#toggleBtn.active .bi-list {
+    transform: rotate(90deg); /* Gira el icono 90 grados */
+}
+
+/* Cambia el color del ícono dentro del botón */
+#toggleBtn .navbar-toggler-icon {
+    color: #ffffff; /* Cambia el color del ícono */
+    font-size: 1.5rem; /* Ajusta el tamaño del ícono */
+}
+
+/* Cambia el color del ícono cuando está activo (cambiado de color) */
+#toggleBtn.collapsed .navbar-toggler-icon {
+    color: #ffffff; /* Cambia el color del ícono cuando el botón está colapsado */
+}
+
+/* Ajusta el tamaño del icono para que sea más visible */
+#toggleBtn .navbar-toggler-icon {
+    font-size: 1.25rem; /* Tamaño del icono */
+}
+
+
+</style>
+
 </head>
 <body>
-    <!-- Encabezado -->
-    <nav id="encabezado" class="navbar navbar-dark bg-dark">
-        <div class="container-fluid">
-            <span></span>
-            <span class="navbar-text"
-                style="color: white; font-size: 17px; font-weight: bold; text-transform: uppercase;">
-                <i class="fas fa-user-circle" style="margin-right: 5px; font-size: 24px;"></i>{{ user_email }}
-            </span>
-        </div>
-    </nav>
 
     <div class="container-fluid">
         <div class="row">
             <!-- Navegador -->
-            <div id="navegador">
+            <div id="navegador" class="collapsed">
+                <button id="toggleBtn" class="navbar-toggler" type="button" onclick="toggleNav()">
+                    <i class="bi bi-arrow-bar-up navbar-toggler-icon"></i>
+                </button>
+                                     
                 <ul class="list-unstyled">
-                    <div id="encabezado-div">
-                        <span class="navbar-brand mb-0 h1"><i class="fas fa-hospital"></i> Hospital XYZ</span>
-                    </div>
-                    <li class="show"><a href="/principal" class="text-decoration-none"><i class="fas fa-user"></i>
-                            Pacientes</a></li>
-                    <li class="show"><a href="/citas_medicas" class="text-decoration-none"><i
-                                class="far fa-calendar-alt"></i> Citas</a></li>
-                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-chart-bar"></i>
-                            Informes</a></li>
-                    <li class="show"><a href="/medico_bot" class="text-decoration-none"><i
-                                class="fas fa-stethoscope"></i> Bot Médico</a></li>
-                    <li class="show"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i>
-                            Personal Médico</a></li>
-                    <li class="show"><a href="/mapas_pacientes" class="text-decoration-none"><i class="fas fa-map-marker-alt"></i> 
-                            Mapa Pacientes</a></li>
-                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-cog"></i>
-                            Configuración</a></li>
-                    <li class="show">
-                        <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#confirmarCerrarSesionModal">
-                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                        </a>
-                    </li>                            
+                    <li class="show"><a href="/principal" class="text-decoration-none"><i class="fas fa-user"></i> Pacientes</a></li>
+                    <li class="show"><a href="/citas_medicas" class="text-decoration-none"><i class="far fa-calendar-alt"></i> Citas</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-chart-bar"></i> Informes</a></li>
+                    <li class="show"><a href="/medico_bot" class="text-decoration-none"><i class="fas fa-stethoscope"></i> Bot Médico</a></li>
+                    {% if rol == 'administrador' %}
+                    <li class="show"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i> Personal Médico</a></li>
+                    {% else %}
+                    <li class="show" style="display:none;"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i> Personal Médico</a></li>
+                    {% endif %} 
+                    <li class="show"><a href="/mapas_pacientes" class="text-decoration-none"><i class="fas fa-map-marker-alt"></i> Mapa Pacientes</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-cog"></i> Configuración</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#confirmarCerrarSesionModal"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
                 </ul>
             </div>
+            
+                <!-- Encabezado -->
+    <div style="display: flex; justify-content: flex-end;">
+        <nav id="encabezado" class="navbar navbar-dark bg-dark navbar-expand" style="width: 86%;">
+            <div class="container-fluid">
+                <div id="encabezado-div" class="mr-auto">
+                    <span class="navbar-brand mb-0 h1" style="font-size: 1.25rem;">
+                        <i class="fas fa-hospital"></i> Hospital {{ nombre_hospital }}
+                    </span>
+                </div>
+                <span class="navbar-text ml-auto"
+                      style="color: white; font-size: 17px; font-weight: bold; text-transform: uppercase; display: flex; align-items: center;">
+                    <i class="fas fa-user-circle" style="margin-right: 5px; font-size: 24px;"></i>{{ user_email }}
+                </span>
+            </div>
+        </nav>
+    </div>
 
             <!-- Contenido -->
             <div id="contenido">
@@ -481,5 +543,13 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 <!-- Script personalizado -->
 <script src="{{ url_for('static', filename='js/principal.js') }}"></script>
+<script>
+    function toggleNav() {
+    var navegador = document.getElementById('navegador');
+    navegador.classList.toggle('collapsed');
+    var toggleBtn = document.getElementById('toggleBtn');
+    toggleBtn.classList.toggle('active')
+}
+</script>
 </body>
 </html>

@@ -39,16 +39,14 @@ def login_required(f):
 def index():
     return render_template('index.html')
 
-@app.route('/prueba')
-def prueba():
-    return render_template('prueba.html')
-
 @app.route('/registrar_personal', methods=['POST'])
 def signup():
     estado = 'Activo'
     tipo_alerta = 'success'
     mensaje_alerta = 'Personal registrado correctamente'
     tipo_registro = 'personal'
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
 
     nombre = request.form['nombre']
     dni = request.form['dni']
@@ -75,7 +73,9 @@ def signup():
             'rol': rol,
             'email': email,
             'hora_actual': hora_actual,
-            'estado':estado
+            'estado':estado,
+            'nom_hospital': nombre_hospital,
+            'n_hospital': numero_hospital
         })
 
         return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
@@ -91,6 +91,8 @@ def pacientes():
     mensaje_alerta = 'Paciente registrado correctamente'
     tipo_registro = 'paciente'
     estado = 'Pendiente'
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
 
     nombre = request.form['nombre']
     dni = request.form['dni']
@@ -139,7 +141,9 @@ def pacientes():
             'fecha_cita': fecha_cita,
             'estado': estado,
             'lat': latitud,
-            'lng': logitud
+            'lng': logitud,
+            'nom_hospital': nombre_hospital,
+            'n_hospital': numero_hospital
 
         })
 
@@ -155,17 +159,20 @@ def pacientes():
 def mostrar_alerta(tipo_alerta, mensaje_alerta, tipo_registro):
     # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
 
     # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
     if not user_email:
         return redirect('/login')
         
     if tipo_registro == 'personal':
-        return render_template('vistas/register.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, user_email=user_email)
+        return render_template('vistas/register.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
     elif tipo_registro == 'paciente':
-        return render_template('principal.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, user_email=user_email)
+        return render_template('principal.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
     elif tipo_registro == 'personal':
-        return render_template('vistas/register.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, user_email=user_email)
+        return render_template('vistas/register.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
 
 @app.route('/registros_pacientes', methods=['GET'])
 def regis_paciente():
@@ -217,8 +224,11 @@ def regis_paciente():
 
 @app.route('/editar_paciente', methods=['POST'])
 def editar_paciente():
-        # Obtener el correo electrónico del usuario autenticado desde la sesión
+    # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
 
     # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
     if not user_email:
@@ -286,23 +296,26 @@ def editar_paciente():
                     "hora_registro": hora_registro,
                     'estado': estado,
                     'lat': lat,
-                    'lng': lng
+                    'lng': lng,
                 }
 
                 # Actualizar los datos en Firebase utilizando la clave autogenerada
                 db.child("Pacientes").child(dni).child(registro_key).update(datos_actualizados)
 
                 # Devolver una respuesta JSON indicando el éxito de la operación
-                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro, user_email=user_email))
+                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro, user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol))
             else:
                 tipo_alerta = 'danger'
                 mensaje_alerta = 'Error al editar al paciente'
-                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro, user_email=user_email))
+                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro, user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol))
 
 @app.route('/editar_personal', methods=['POST'])
 def editar_personal():
     # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
 
     # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
     if not user_email:
@@ -341,11 +354,14 @@ def editar_personal():
             tipo_alerta = 'danger'
             mensaje_alerta = 'Personal no encontrado'
     
-    return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro, user_email=user_email))
+    return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro, user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol))
         
 @app.route('/eliminar_personal', methods=['POST'])
 def eliminar_personal():
     user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
 
     # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
     if not user_email:
@@ -358,6 +374,9 @@ def eliminar_personal():
 def eliminar_paciente():
     # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
 
     # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
     if not user_email:
@@ -387,15 +406,15 @@ def eliminar_paciente():
                 db.child("Pacientes").child(dni).child(registro_key).remove()
 
                 # Devolver una respuesta JSON indicando el éxito de la operación
-                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro,user_email=user_email))
+                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro,user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol))
             else:
                 tipo_alerta = 'danger'
                 mensaje_alerta = 'Error al eliminar al paciente'
-                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro,user_email=user_email))
+                return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro,user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol))
         else:
             tipo_alerta = 'danger'
             mensaje_alerta = 'Error al eliminar al paciente: No se encontraron registros para el DNI proporcionado'
-            return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro,user_email=user_email))
+            return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro,user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol))
     else:
         tipo_alerta = 'danger'
         mensaje_alerta = 'Error al eliminar al paciente: Método no permitido'
@@ -422,7 +441,9 @@ def registro_personal_madico():
             'rol': personal_data.get('rol', ''),
             'email': personal_data.get('email', ''),
             'hora_actual': personal_data.get('hora_actual', ''),
-            'estado': personal_data.get('estado', '')
+            'estado': personal_data.get('estado', ''),
+            'n_hospital': personal_data.get('n_hospital', ''),
+            'nom_hospital': personal_data.get('nom_hospital', '')
         }
         datos_personal.append(datos_personal_medico)
 
@@ -437,19 +458,46 @@ def login():
         password = request.form['password']
 
         try:
-            # Attempt to sign in with the provided email and password
+            # Intentar iniciar sesión con el email y la contraseña proporcionados
             user_cred = auth.sign_in_with_email_and_password(email, password)
 
-            # Get the authenticated user's email
+            # Obtener el email del usuario autenticado
             user_email = user_cred['email']
 
-            # Store the user's email in the session
-            session['user_email'] = user_email
+            # Obtener los registros del personal desde la base de datos
+            registros_personal = db.child("personal").get().val()
 
-            # Redirect the user to the main page
-            return redirect('/principal')
+            # Variable para almacenar los datos del personal correspondiente al email
+            datos_personal_usuario = None
+
+            # Iterar sobre los registros de personal
+            for dni, personal_data in registros_personal.items():
+                if personal_data.get('email', '') == user_email:
+                    # Si el email coincide, guardar los datos del personal
+                    datos_personal_usuario = {
+                        'n_hospital': personal_data.get('n_hospital', ''),
+                        'nom_hospital': personal_data.get('nom_hospital', ''),
+                        'rol': personal_data.get('rol', '')
+                    }
+                    break
+
+            if datos_personal_usuario:
+                # Almacenar el email y los datos adicionales en la sesión
+                session['user_email'] = user_email
+                session['n_hospital'] = datos_personal_usuario['n_hospital']
+                session['nom_hospital'] = datos_personal_usuario['nom_hospital']
+                session['rol'] = datos_personal_usuario['rol']
+
+                # Redirigir al usuario a la página principal
+                return redirect('/principal')
+            else:
+                # Si no se encontraron datos del personal para el email, mostrar un error
+                tipo_alerta = 'danger'
+                mensaje_alerta = 'No se encontraron datos del personal para el email proporcionado.'
+                return render_template('index.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
+        
         except Exception as e:
-            # Default alert type and message
+            # Manejo de excepciones y mensajes de error
             tipo_alerta = 'danger'
             mensaje_alerta = 'Error desconocido'
 
@@ -462,11 +510,11 @@ def login():
                 mensaje_alerta = 'Cuenta Deshabilitada'
             else:
                 mensaje_alerta = 'Correo o Contraseña es Incorrecta'
-            # Render the login template with the error message
-            return render_template('index.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
 
-    # If the request is GET, render the login template
+            # Renderizar la plantilla de inicio de sesión con el mensaje de error
+            return render_template('index.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
     return render_template('index.html')
+
 
 @app.route('/logout')
 def logout():
@@ -550,66 +598,84 @@ def iamedic():
 def principal():
     # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
 
     # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
     if not user_email:
         return redirect('/login')
 
     # Renderizar la plantilla principal y pasar el correo electrónico del usuario
-    return render_template('principal.html', user_email=user_email)
+    return render_template('principal.html', user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
 
 @app.route('/personal')
 def paciente():
-            # Obtener el correo electrónico del usuario autenticado desde la sesión
+    # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
 
     # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
     if not user_email:
         return redirect('/login')
 
     # Renderizar la plantilla principal y pasar el correo electrónico del usuario
-    return render_template('vistas/register.html', user_email=user_email)
+    return render_template('vistas/register.html', user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
 
 @app.route('/medico_bot')
 def medicobot():
     # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
 
     # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
     if not user_email:
         return redirect('/login')
 
     # Renderizar la plantilla principal y pasar el correo electrónico del usuario
-    return render_template('vistas/ia_medic.html', user_email=user_email)
+    return render_template('vistas/ia_medic.html', user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
 
 @app.route('/registro_reniec')
 def ciudadano():
     # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
 
     # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
     if not user_email:
         return redirect('/login')
 
     # Renderizar la plantilla principal y pasar el correo electrónico del usuario
-    return render_template('vistas/reniec.html', user_email=user_email)
+    return render_template('vistas/reniec.html', user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
 
 @app.route('/citas_medicas')
 def citas():
     # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
 
     # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
     if not user_email:
         return redirect('/login')
 
     # Renderizar la plantilla principal y pasar el correo electrónico del usuario
-    return render_template('vistas/citas.html', user_email=user_email)
+    return render_template('vistas/citas.html', user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
 
 @app.route('/mapas_pacientes')
 def mapas():
     # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
     tipo_alerta = 'success'
     mensaje_alerta = 'Paciente editado correctamente'
     
@@ -617,9 +683,7 @@ def mapas():
     if not user_email:
         return redirect('/login')
     
-
-    
-    return render_template('vistas/mapa_pacientes.html', user_email=user_email)
+    return render_template('vistas/mapa_pacientes.html', user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
 
 @app.route('/pruebamapas')
 def mapas_prueba():
