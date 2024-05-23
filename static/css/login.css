@@ -1,24 +1,314 @@
 body {
-    background-size: cover;
-    background-repeat: no-repeat;
-    transition: background-image 1s ease-in-out; 
-}
-
-.position-relative {
+    background: #dddddd;
+    padding: 0;
+    margin: 0;
+  }
+  
+  h1 {
+    margin: 0;
+  }
+  
+  .header {
+    background-color: #ffffff;
+    width: 100%;
+    height: 100vh;
+  }
+  
+  #slider {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    overflow: hidden;
+  }
+  
+  #slider input[type=radio] {
+    display: none;
+  }
+  
+  #slider label {
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  #slides {
+    background: #ffffff;
     position: relative;
-}
-
-.icon {
+    z-index: 1;
+  }
+  
+  #overflow {
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  #slide1:checked ~ #slides .inner {
+    margin-left: 0;
+    animation: slide1 1s forwards;
+  }
+  
+  #slide2:checked ~ #slides .inner {
+    margin-left: -100%;
+    animation: slide2 1s forwards;
+  }
+  
+  #slide3:checked ~ #slides .inner {
+    margin-left: -200%;
+    animation: slide3 1s forwards;
+  }
+  
+  #slide4:checked ~ #slides .inner {
+    margin-left: -300%;
+    animation: slide4 1s forwards;
+  }
+  
+  #slides .inner {
+    width: 400%;
+    line-height: 0;
+    height: 100vh;
+  }
+  
+  #slides .slide {
+    width: 25%;
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #fff;
+  }
+  
+  #slides .slide_1 {
+    background: #00408e;
+  }
+  
+  #slides .slide_2 {
+    background: #00171f;
+  }
+  
+  #slides .slide_3 {
+    background: #c3a9ff;
+  }
+  
+  #slides .slide_4 {
+    background: #9d950e;
+  }
+  
+  #controls {
+    width: 100%;
+    height: 50px;
+    z-index: 3;
+    position: relative;
+  }
+  
+  #controls label {
+    transition: opacity 0.2s ease-out;
+    display: none;
+    width: 50px;
+    height: 50px;
+    opacity: 0.4;
+  }
+  
+  #controls label:hover {
+    opacity: 0.1;
+  }
+  
+  #slide1:checked ~ #controls label:nth-child(2),
+  #slide2:checked ~ #controls label:nth-child(3),
+  #slide3:checked ~ #controls label:nth-child(4),
+  #slide4:checked ~ #controls label:nth-child(1) {
+    background: url(https://www.flaticon.com/svg/static/icons/svg/271/271228.svg) no-repeat;
+    float: right;
+    margin: 0 -100px 0 0;
+    display: block;
+    color: red;
+  }
+  
+  #slide1:checked ~ #controls label:nth-last-child(1),
+  #slide2:checked ~ #controls label:nth-last-child(4),
+  #slide3:checked ~ #controls label:nth-last-child(3),
+  #slide4:checked ~ #controls label:nth-last-child(2) {
+    background: url(https://www.flaticon.com/svg/static/icons/svg/271/271220.svg) no-repeat;
+    float: left;
+    margin: 0 0 0 -100px;
+    display: block;
+    color: red;
+  }
+  
+  #bullets {
+    text-align: center;
     position: absolute;
-    top: 50%;
-    right: 10px; /* Ajustamos la posición del icono a la derecha */
-    transform: translateY(-50%);
-    opacity: 0;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.icon.active {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0); /* Ajustamos la posición del icono a la izquierda */
-}
-
+    z-index: 20;
+    bottom: 20px;
+    right: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  #bullets label {
+    width: 180px;
+    height: 250px;
+    border-radius: 10px;
+    background: #cccccc;
+    flex-basis: 32%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    -webkit-animation: in 0.3s;
+    position: relative;
+  }
+  
+  #bullets label img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+  }
+  
+  #bullets label:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    position: relative;
+    -webkit-animation: out 0.3s forwards;
+  }
+  
+  @-webkit-keyframes in {
+    0% {
+      bottom: 25px;
+    }
+    100% {
+      bottom: 1px;
+    }
+  }
+  
+  @-webkit-keyframes out {
+    0% {
+      bottom: 0px;
+    }
+    100% {
+      bottom: 25px;
+    }
+  }
+  
+  #slide1:checked ~ #bullets label:nth-child(1),
+  #slide2:checked ~ #bullets label:nth-child(2),
+  #slide3:checked ~ #bullets label:nth-child(3),
+  #slide4:checked ~ #bullets label:nth-child(4) {
+    background: #444;
+    display: none;
+  }
+  
+  #slide1:checked ~ #bullets label:nth-child(1) {
+    order: 1;
+  }
+  
+  #slide2:checked ~ #bullets label:nth-child(2) {
+    order: 2;
+  }
+  
+  #slide2:checked ~ #bullets label:nth-child(1) {
+    order: 1;
+  }
+  
+  #slide3:checked ~ #bullets label:nth-child(3) {
+    order: 1;
+  }
+  
+  #slide3:checked ~ #bullets label:nth-child(4) {
+    order: -1;
+  }
+  
+  .body {
+    background-color: #cccccc;
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .footer {
+    background-color: #ffffff;
+    width: 100%;
+    height: 100vh;
+  }
+  
+  @keyframes slide1 {
+    0% {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 0);
+    }
+    100% {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+  }
+  
+  @keyframes slide2 {
+    0% {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 0);
+    }  100% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+    }
+    
+    @keyframes slide3 {
+      0% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 0);
+      }
+      100% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+    }
+    
+    @keyframes slide4 {
+      0% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 0);
+      }
+      100% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+    }
+    
+    @media (min-width: 900px) {
+      #slide1:checked ~ #controls label:nth-child(2),
+      #slide2:checked ~ #controls label:nth-child(3),
+      #slide3:checked ~ #controls label:nth-child(4),
+      #slide4:checked ~ #controls label:nth-child(1),
+      #slide1:checked ~ #controls label:nth-last-child(2),
+      #slide2:checked ~ #controls lab el:nth-last-child(3),
+      #slide3:checked ~ #controls label:nth-last-child(4),
+      #slide4:checked ~ #controls label:nth-last-child(1) {
+    
+      }
+    }
+    
+    @media (max-width: 768px) {
+        /* Ajustar el tamaño de las etiquetas de control */
+        #controls label {
+            width: 30px;
+            height: 30px;
+        }
+    
+        /* Modificar el espaciado y las dimensiones de los controles */
+        #controls label:nth-child(2),
+        #controls label:nth-child(3),
+        #controls label:nth-child(4),
+        #controls label:nth-child(1),
+        #controls label:nth-last-child(2),
+        #controls label:nth-last-child(3),
+        #controls label:nth-last-child(4),
+        #controls label:nth-last-child(1) {
+            margin: 0 -50px 0 0;
+        }
+    
+        /* Hacer que el slider sea responsive */
+        #slides .slide {
+            width: 100%;
+        }
+    
+        #bullets {
+            right: 0;
+        }
+    
+        #bullets label {
+            width: 50px;
+            height: 70px;
+        }
+    }
+    
