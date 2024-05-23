@@ -16,77 +16,23 @@
  <!-- CSS personalizado -->
  <link rel="stylesheet" href="{{ url_for('static', filename='css/personal.css') }}">
  <link rel="stylesheet" href="{{ url_for('static', filename='css/principal.css') }}">
- <style>
-    #navegador {
-        width: 250px;
-        transition: width 0.3s;
-    }
-    #navegador.collapsed {
-        width: 0;
-        overflow: hidden;
-    }
-    @media (max-width: 768px) {
-        #navegador {
-            position: absolute;
-            height: 100%;
-            z-index: 1000;
-        }
-    }
-    .navbar-toggler {
-        margin-left: auto;
-    }
-    #navegador.collapsed {
-    width: 50px; /* Ancho reducido cuando está colapsado */
-    overflow: hidden; /* Ocultar contenido adicional */
-}
-
-/* Estilos personalizados para el botón hamburguesa */
-#toggleBtn {
-    background-color: #1c2731; /* Cambia el color de fondo */
-    border: none; /* Sin borde */
-    padding: 8px 10px; /* Espaciado interno */
-    cursor: pointer; /* Cambia el cursor */
-    transition: transform 0.3s ease; /* Transición para la animación */
-}
-
-#toggleBtn .bi-list {
-    transition: transform 0.3s ease; /* Transición para el icono */
-}
-
-#toggleBtn.active .bi-list {
-    transform: rotate(90deg); /* Gira el icono 90 grados */
-}
-
-/* Cambia el color del ícono dentro del botón */
-#toggleBtn .navbar-toggler-icon {
-    color: #ffffff; /* Cambia el color del ícono */
-    font-size: 1.5rem; /* Ajusta el tamaño del ícono */
-}
-
-/* Cambia el color del ícono cuando está activo (cambiado de color) */
-#toggleBtn.collapsed .navbar-toggler-icon {
-    color: #ffffff; /* Cambia el color del ícono cuando el botón está colapsado */
-}
-
-/* Ajusta el tamaño del icono para que sea más visible */
-#toggleBtn .navbar-toggler-icon {
-    font-size: 1.25rem; /* Tamaño del icono */
-}
-
-
-</style>
-
 </head>
 <body>
+    <nav id="encabezado" class="navbar navbar-dark bg-dark">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <span class="navbar-brand mb-0 h1">
+                <i class="fas fa-hospital"></i>  Hospital {{ nombre_hospital }}
+            </span>
+            <span class="navbar-text" style="color: white; font-size: 17px; font-weight: bold; text-transform: uppercase;">
+                <i class="fas fa-user-circle" style="margin-right: 5px; font-size: 24px;"></i>{{ user_email }}
+            </span>
+        </div>
+    </nav>
 
     <div class="container-fluid">
         <div class="row">
             <!-- Navegador -->
-            <div id="navegador" class="collapsed">
-                <button id="toggleBtn" class="navbar-toggler" type="button" onclick="toggleNav()">
-                    <i class="bi bi-arrow-bar-up navbar-toggler-icon"></i>
-                </button>
-                                     
+            <div id="navegador" class="collapsed">      
                 <ul class="list-unstyled">
                     <li class="show"><a href="/principal" class="text-decoration-none"><i class="fas fa-user"></i> Pacientes</a></li>
                     <li class="show"><a href="/citas_medicas" class="text-decoration-none"><i class="far fa-calendar-alt"></i> Citas</a></li>
@@ -102,28 +48,11 @@
                     <li class="show"><a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#confirmarCerrarSesionModal"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
                 </ul>
             </div>
-            
-                <!-- Encabezado -->
-    <div style="display: flex; justify-content: flex-end;">
-        <nav id="encabezado" class="navbar navbar-dark bg-dark navbar-expand" style="width: 86%;">
-            <div class="container-fluid">
-                <div id="encabezado-div" class="mr-auto">
-                    <span class="navbar-brand mb-0 h1" style="font-size: 1.25rem;">
-                        <i class="fas fa-hospital"></i> Hospital {{ nombre_hospital }}
-                    </span>
-                </div>
-                <span class="navbar-text ml-auto"
-                      style="color: white; font-size: 17px; font-weight: bold; text-transform: uppercase; display: flex; align-items: center;">
-                    <i class="fas fa-user-circle" style="margin-right: 5px; font-size: 24px;"></i>{{ user_email }}
-                </span>
-            </div>
-        </nav>
-    </div>
 
             <!-- Contenido -->
-            <div id="contenido">
+            <div id="contenido" class="main-content-expanded col">
                     <br>
-                <table id="data_table" class="display" style="width:100%">
+                <table id="data_table" class="table table-striped" style="width:100% !important;">
                     <thead>
                         <tr>
                             <th>Nombre</th>
@@ -149,6 +78,7 @@
                         </tr>
                     </thead>
                 </table>
+                <br>
                 <!-- Alerta -->
                 {% if tipo_alerta %}
                 <div id="alerta" class="alert alert-{{ tipo_alerta }} alert-dismissible fade show position-fixed bottom-0 end-0" role="alert" style="width: 20%; bottom: 50px !important;">
@@ -365,7 +295,7 @@
                                     <label for="nombre" class="custom-label">Nombre Completo</label>
                                 </div>
                                 <div class="input-container">
-                                    <input type="text" id="dniEdit" name="dniEdit" class="form-control custom-input" required pattern="[0-9]{8}" title="El DNI debe contener solo 8 números">
+                                    <input type="text" id="dniEdit" name="dniEdit" class="form-control custom-input" required pattern="[0-9]{8}" title="El DNI debe contener solo 8 números" readonly>
                                     <label for="dni" class="custom-label">DNI</label>
                                 </div>
                                 <div class="input-container">
@@ -486,6 +416,26 @@
         </div>
     </div>
 
+<!-- Modal de confirmación para eliminar paciente -->
+<div class="modal fade" id="confirmarEliminarModal" tabindex="-1" aria-labelledby="confirmarEliminarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="confirmarEliminarModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <form id="formEliminarPaciente" action="/eliminar_paciente" method="post">
+                    <input type="hidden" name="dniDelete" id="dniDelete">
+                    <input type="hidden" name="horaRegistroDelete" id="horaRegistroDelete">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-danger">Sí</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal de confirmación para cerrar sesión -->
 <div class="modal fade" id="confirmarCerrarSesionModal" tabindex="-1" aria-labelledby="confirmarCerrarSesionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -497,25 +447,6 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <a href="/logout" class="btn btn-danger">Cerrar Sesión</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal de confirmación para cerrar  session -->
-<div class="modal fade" id="cerrar_session" tabindex="-1" aria-labelledby="cerrar_sessionModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="cerrar_session">¿Seguro de cerrar Session?</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-footer">
-                <form action="/logout" method="POST">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger">Cerrar</button>
-                </form>
             </div>
         </div>
     </div>

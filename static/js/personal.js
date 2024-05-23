@@ -301,3 +301,15 @@ function showModal(latLng) {
             $('#resultado').text(`Error: No se encontró información o hubo un problema con la consulta.`);
         }
     }
+
+    function toggleNav() {
+        var navegador = document.getElementById('navegador');
+        var contenido = document.getElementById('contenido');
+        var toggleBtn = document.getElementById('toggleBtn');
+    
+        navegador.classList.toggle('navegador-collapsed');
+        contenido.classList.toggle('main-content-collapsed');
+        contenido.classList.toggle('main-content-expanded');
+        toggleBtn.classList.toggle('active');
+    }
+    

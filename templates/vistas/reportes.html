@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Médico Detallado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #333;
+            font-size: 36px;
+            margin: 10px 0;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 30px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Reporte Médico Detallado</h1>
+        </header>
+        <form id="reporte_form" action="/guardar_reporte" method="POST">
+            <div>
+                <label for="paciente">Nombre del Paciente:</label>
+                <input type="text" id="paciente" name="paciente" required>
+            </div>
+            <div>
+                <label for="fecha">Fecha del Reporte:</label>
+                <input type="date" id="fecha" name="fecha" required>
+            </div>
+            <div>
+                <label for="diagnostico">Diagnóstico:</label>
+                <textarea id="diagnostico" name="diagnostico" rows="6" required></textarea>
+            </div>
+            <div>
+                <label for="tratamiento">Tratamiento Recomendado:</label>
+                <textarea id="tratamiento" name="tratamiento" rows="6" required></textarea>
+            </div>
+            <div>
+                <label for="observaciones">Observaciones:</label>
+                <textarea id="observaciones" name="observaciones" rows="4"></textarea>
+            </div>
+            <div>
+                <label for="examenes">Resultados de Exámenes:</label>
+                <textarea id="examenes" name="examenes" rows="4"></textarea>
+            </div>
+            <div>
+                <label for="medicamentos">Medicamentos Recetados:</label>
+                <textarea id="medicamentos" name="medicamentos" rows="4"></textarea>
+            </div>
+            <div>
+                <label for="proxima_cita">Próxima Cita:</label>
+                <input type="date" id="proxima_cita" name="proxima_cita">
+            </div>
+            <div>
+                <label for="observaciones_seguimiento">Observaciones de Seguimiento:</label>
+                <textarea id="observaciones_seguimiento" name="observaciones_seguimiento" rows="4"></textarea>
+            </div>
+            <input type="submit" value="Guardar Reporte">
+        </form>
+        <footer>
+            <p>Este reporte médico es confidencial y está destinado únicamente para el uso del personal médico.</p>
+        </footer>
+    </div>
+</body>
+</html>

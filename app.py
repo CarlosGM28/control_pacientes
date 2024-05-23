@@ -2,6 +2,7 @@ import os
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from datetime import datetime
+import requests
 import pyrebase
 import google.generativeai as genai
 
@@ -354,7 +355,7 @@ def editar_personal():
             tipo_alerta = 'danger'
             mensaje_alerta = 'Personal no encontrado'
     
-    return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro, user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol))
+    return redirect(url_for('mostrar_alerta', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta, tipo_registro=tipo_registro))
         
 @app.route('/eliminar_personal', methods=['POST'])
 def eliminar_personal():
@@ -370,7 +371,7 @@ def eliminar_personal():
     mensaje_alerta = 'Paciente eliminado correctamente'
     tipo_registro = 'paciente'
 
-@app.route('/eliminar_personal', methods=['POST'])
+@app.route('/eliminar_paciente', methods=['POST'])
 def eliminar_paciente():
     # Obtener el correo electrónico del usuario autenticado desde la sesión
     user_email = session.get('user_email')
@@ -458,44 +459,39 @@ def login():
         password = request.form['password']
 
         try:
+            # Obtener los registros del personal desde la base de datos
+            registros_personal = db.child("personal").get().val()
+
+            # Buscar los datos del personal correspondiente al email
+            datos_personal_usuario = next((personal for personal in registros_personal.values() if personal.get('email') == email), None)
+
+            if datos_personal_usuario:
+                # Verificar si la cuenta está deshabilitada
+                if datos_personal_usuario.get('estado', '') == 'Desabilitado':
+                    tipo_alerta = 'danger'
+                    mensaje_alerta = 'Su Cuenta fue Deshabilitada.'
+                    return render_template('index.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
+            else:
+                # Si no se encontraron datos del personal para el email, mostrar un error
+                tipo_alerta = 'danger'
+                mensaje_alerta = 'No se encontraron datos del personal para el email proporcionado.'
+                return render_template('index.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
+
             # Intentar iniciar sesión con el email y la contraseña proporcionados
             user_cred = auth.sign_in_with_email_and_password(email, password)
 
             # Obtener el email del usuario autenticado
             user_email = user_cred['email']
 
-            # Obtener los registros del personal desde la base de datos
-            registros_personal = db.child("personal").get().val()
+            # Almacenar el email y los datos adicionales en la sesión
+            session['user_email'] = user_email
+            session['n_hospital'] = datos_personal_usuario.get('n_hospital', '')
+            session['nom_hospital'] = datos_personal_usuario.get('nom_hospital', '')
+            session['rol'] = datos_personal_usuario.get('rol', '')
 
-            # Variable para almacenar los datos del personal correspondiente al email
-            datos_personal_usuario = None
+            # Redirigir al usuario a la página principal
+            return redirect('/principal')
 
-            # Iterar sobre los registros de personal
-            for dni, personal_data in registros_personal.items():
-                if personal_data.get('email', '') == user_email:
-                    # Si el email coincide, guardar los datos del personal
-                    datos_personal_usuario = {
-                        'n_hospital': personal_data.get('n_hospital', ''),
-                        'nom_hospital': personal_data.get('nom_hospital', ''),
-                        'rol': personal_data.get('rol', '')
-                    }
-                    break
-
-            if datos_personal_usuario:
-                # Almacenar el email y los datos adicionales en la sesión
-                session['user_email'] = user_email
-                session['n_hospital'] = datos_personal_usuario['n_hospital']
-                session['nom_hospital'] = datos_personal_usuario['nom_hospital']
-                session['rol'] = datos_personal_usuario['rol']
-
-                # Redirigir al usuario a la página principal
-                return redirect('/principal')
-            else:
-                # Si no se encontraron datos del personal para el email, mostrar un error
-                tipo_alerta = 'danger'
-                mensaje_alerta = 'No se encontraron datos del personal para el email proporcionado.'
-                return render_template('index.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
-        
         except Exception as e:
             # Manejo de excepciones y mensajes de error
             tipo_alerta = 'danger'
@@ -513,8 +509,8 @@ def login():
 
             # Renderizar la plantilla de inicio de sesión con el mensaje de error
             return render_template('index.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
+    
     return render_template('index.html')
-
 
 @app.route('/logout')
 def logout():
@@ -685,10 +681,10 @@ def mapas():
     
     return render_template('vistas/mapa_pacientes.html', user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
 
-@app.route('/pruebamapas')
+@app.route('/prueba')
 def mapas_prueba():
 
-    return render_template('vistas/mapas_prueba.html')
+    return render_template('vistas/reportes.html')
 
 @app.route('/consultas')
 def reniec():

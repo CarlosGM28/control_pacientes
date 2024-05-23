@@ -38,10 +38,11 @@
 <body>
     <!-- Encabezado -->
     <nav id="encabezado" class="navbar navbar-dark bg-dark">
-        <div class="container-fluid">
-            <span></span>
-            <span class="navbar-text"
-                style="color: white; font-size: 17px; font-weight: bold; text-transform: uppercase;">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <span class="navbar-brand mb-0 h1">
+                <i class="fas fa-hospital"></i>  Hospital {{ nombre_hospital }}
+            </span>
+            <span class="navbar-text" style="color: white; font-size: 17px; font-weight: bold; text-transform: uppercase;">
                 <i class="fas fa-user-circle" style="margin-right: 5px; font-size: 24px;"></i>{{ user_email }}
             </span>
         </div>
@@ -50,37 +51,25 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Barra de navegación lateral -->
-            <div id="navegador">
+            <div id="navegador" class="collapsed">      
                 <ul class="list-unstyled">
-                    <div id="encabezado-div">
-                        <span class="navbar-brand mb-0 h1"><i class="fas fa-hospital"></i> Hospital XYZ</span>
-                    </div>
-                    <li class="show"><a href="/principal" class="text-decoration-none"><i class="fas fa-user"></i>
-                            Pacientes</a></li>
-                    <li class="show"><a href="/citas_medicas" class="text-decoration-none"><i
-                                class="far fa-calendar-alt"></i> Citas</a></li>
-                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-chart-bar"></i>
-                            Informes</a></li>
-                    <li class="show"><a href="/medico_bot" class="text-decoration-none"><i
-                                class="fas fa-stethoscope"></i> Bot Médico</a></li>
+                    <li class="show"><a href="/principal" class="text-decoration-none"><i class="fas fa-user"></i> Pacientes</a></li>
+                    <li class="show"><a href="/citas_medicas" class="text-decoration-none"><i class="far fa-calendar-alt"></i> Citas</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-chart-bar"></i> Informes</a></li>
+                    <li class="show"><a href="/medico_bot" class="text-decoration-none"><i class="fas fa-stethoscope"></i> Bot Médico</a></li>
                     {% if rol == 'administrador' %}
-                    <li class="show"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i>
-                            Personal Médico</a></li>
+                    <li class="show"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i> Personal Médico</a></li>
                     {% else %}
-                    <li class="show" style="display:none;"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i>
-                            Personal Médico</a></li>
+                    <li class="show" style="display:none;"><a href="/personal" class="text-decoration-none"><i class="fas fa-user-md"></i> Personal Médico</a></li>
                     {% endif %} 
-                    <li class="show"><a href="/mapas_pacientes" class="text-decoration-none"><i class="fas fa-map-marker-alt"></i> 
-                            Mapa Pacientes</a></li>
-                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-cog"></i>
-                            Configuración</a></li>
-                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-sign-out-alt"></i> Cerrar
-                            Sesión</a></li>
+                    <li class="show"><a href="/mapas_pacientes" class="text-decoration-none"><i class="fas fa-map-marker-alt"></i> Mapa Pacientes</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none"><i class="fas fa-cog"></i> Configuración</a></li>
+                    <li class="show"><a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#confirmarCerrarSesionModal"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
                 </ul>
             </div>
 
             <!-- Contenido principal -->
-            <div id="contenido">
+            <div id="contenido" class="main-content-expanded col">
                 <div id="respuesta" class="flex-grow-1" style="padding: 10px;">
                     {% if respuesta %}
                         <div>

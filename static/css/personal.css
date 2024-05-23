@@ -16,78 +16,6 @@ body {
     
 }
 
-#navegador {
-    background-color: #1c2731; /* Nuevo color para el navegador */
-    color: #fff;
-    padding: 20px;
-    height: 100vh;
-    border-right: 2px solid #6c757d;
-    overflow-y: auto;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 14.66%; /* Approx 2/12 of the viewport width */
-    max-width: 100vh;
-}
-
-@media (max-width: 768px) {
-    #navegador {
-        width: 100% !important; /* Full width */
-        height: auto !important; /* Auto height */
-        position: relative !important; /* Static position */
-        border-right: none !important;
-        padding: 10px;
-    }
-    #contenido {
-        margin-left: 10px !important; 
-        width: 100% !important;
-    }
-}
-
-#navegador h2 {
-    margin-bottom: 20px;
-    color: #fff;
-}
-
-#navegador ul {
-    padding-left: 0;
-    list-style: none;
-}
-
-#navegador ul li {
-    margin-bottom: 10px;
-    position: relative;
-    border-radius: 5px;
-    border: 2px solid #007bff; /* Bordes y color de borde azul claro */
-}
-
-#navegador ul li a {
-    display: block;
-    padding: 10px;
-    background-color: #007bff; /* Fondo azul claro */
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-#navegador ul li i {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
-    color: #fff;
-}
-
-#navegador ul li a:hover {
-    background-color: #0056b3; /* Cambio de color al pasar el mouse */
-}
-
-#contenido {
-    margin-left: 14.66%; /* Mismo ancho que el #navegador */
-    padding: 20px;
-    width: 85.34%; /* Resto del ancho del viewport */
-}
 .custom-label {
     color: #ffffff;
     font-weight: bold;
@@ -197,7 +125,6 @@ body {
     background-color: #ffffff; /* Fondo oscuro */
     color: #3498db; /* Color azul */
 }
-
 /* Estilos personalizados para la tabla de pacientes */
 /* Estilo de la tabla */
 .table-container {
@@ -221,7 +148,7 @@ body {
 }
 
 .table th {
-    background-color: #34495e; /* Color de fondo del encabezado */
+    background-color: #007bff; /* Color de fondo del encabezado */
     color: #ecf0f1; /* Color del texto del encabezado */
     font-weight: bold;
 }
