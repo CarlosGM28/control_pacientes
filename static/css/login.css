@@ -279,36 +279,125 @@ body {
     }
     
     @media (max-width: 768px) {
-        /* Ajustar el tamaño de las etiquetas de control */
-        #controls label {
-            width: 30px;
-            height: 30px;
-        }
+      /* Ajustar el tamaño de las etiquetas de control */
+      #controls label {
+          width: 30px;
+          height: 30px;
+      }
+  
+      /* Modificar el espaciado y las dimensiones de los controles */
+      #controls label:nth-child(2),
+      #controls label:nth-child(3),
+      #controls label:nth-child(4),
+      #controls label:nth-child(1),
+      #controls label:nth-last-child(2),
+      #controls label:nth-last-child(3),
+      #controls label:nth-last-child(4),
+      #controls label:nth-last-child(1) {
+          margin: 0 -50px 0 0;
+      }
+  
+      /* Hacer que el slider sea responsive */
+      #slider {
+          overflow: hidden;
+          max-width: 100vw;
+      }
+  
+      #slides {
+          display: flex;
+          transition: transform 0.5s ease-in-out;
+      }
+  
+      #slides .slide {
+          flex: 0 0 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+          position: relative;
+      }
+  
+      #slides .slide-content {
+          position: relative;
+      }
+  
+      #slides .slide img {
+          width: 100%;
+          height: auto;
+          object-fit: cover;
+      }
+  
+      .overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+          color: white;
+          text-align: center;
+      }
+  
+      #bullets {
+          right: 0;
+      }
+  
+      #bullets label {
+          width: 50px;
+          height: 70px;
+      }
+  }
+  
     
-        /* Modificar el espaciado y las dimensiones de los controles */
-        #controls label:nth-child(2),
-        #controls label:nth-child(3),
-        #controls label:nth-child(4),
-        #controls label:nth-child(1),
-        #controls label:nth-last-child(2),
-        #controls label:nth-last-child(3),
-        #controls label:nth-last-child(4),
-        #controls label:nth-last-child(1) {
-            margin: 0 -50px 0 0;
-        }
-    
-        /* Hacer que el slider sea responsive */
-        #slides .slide {
-            width: 100%;
-        }
-    
-        #bullets {
-            right: 0;
-        }
-    
-        #bullets label {
-            width: 50px;
-            height: 70px;
-        }
-    }
-    
+.slide-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  color: white;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.overlay h2 {
+  margin: 0;
+  padding: 10px;
+  font-size: 2rem;
+}
+
+.overlay p {
+  margin: 0;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+#popup {
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.6); /* Sombra con un color rojo más llamativo */
+  animation: scaleIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Animación de escala */
+}
+
+/* Definición de la animación de escala */
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
