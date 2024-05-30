@@ -1,6 +1,5 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
     color: #212529;
     margin: 0;
     padding: 0;
@@ -138,3 +137,20 @@ body {
     border-color: #0056b3;
     box-shadow: 0 0 0 0.25rem rgba(38, 143, 255, 0.5);
 }
+
+/* Anchura */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 12px;
+  }
+  
+  /* Fondo */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: var(--thumb-color, #888);
+    border-radius: 10px;
+  }
