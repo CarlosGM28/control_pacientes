@@ -20,27 +20,17 @@
       width: 100%;
       z-index: 1000;
     }
-
-    .overlay {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      text-align: center;
-    }
-
-    .slide-content {
-      position: relative;
-    }
+    .spinner-border {
+            display: none; /* Oculto por defecto */
+        }
   </style>
 </head>
 
 <body>
   <!-- Navbar -->
-  <nav id="encabezado" class="navbar navbar-dark bg-dark">
+  <nav id="encabezado" class="navbar">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Mi Sitio</a>
+      <a class="navbar-brand" href="#"></a>
       <button class="btn btn-outline-light" type="button" id="openPopup">Login</button>
     </div>
   </nav>
@@ -56,37 +46,21 @@
           <div class="slide slide_1">
             <div class="slide-content">
               <img src="../static/storage/login_1.jpg" alt="" style="width: 100%; height: 100%;">
-              <div class="overlay">
-                <h2>Contenido Superpuesto 1</h2>
-                <p>Este es el contenido que estará superpuesto sobre la imagen 1.</p>
-              </div>
             </div>
           </div>
           <div class="slide slide_2">
             <div class="slide-content">
               <img src="../static/storage/login_2.jpg" alt="" style="width: 100%; height: 100%;">
-              <div class="overlay">
-                <h2>Contenido Superpuesto 2</h2>
-                <p>Este es el contenido que estará superpuesto sobre la imagen 2.</p>
-              </div>
             </div>
           </div>
           <div class="slide slide_3">
             <div class="slide-content">
               <img src="../static/storage/login_3.jpg" alt="" style="width: 100%; height: 100%;">
-              <div class="overlay">
-                <h2>Contenido Superpuesto 3</h2>
-                <p>Este es el contenido que estará superpuesto sobre la imagen 3.</p>
-              </div>
             </div>
           </div>
           <div class="slide slide_4">
             <div class="slide-content">
               <img src="../static/storage/login_4.jpg" alt="" style="width: 100%; height: 100%;">
-              <div class="overlay">
-                <h2>Contenido Superpuesto 4</h2>
-                <p>Este es el contenido que estará superpuesto sobre la imagen 4.</p>
-              </div>
             </div>
           </div>
         </div>
@@ -108,36 +82,11 @@
     </div>
   </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="email" class="form-label">Correo electrónico</label>
-              <input type="email" class="form-control" id="email" required>
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">Contraseña</label>
-              <input type="password" class="form-control" id="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
 <!-- Define el diálogo -->
 <dialog id="popup">
   <button id="closePopup" style="position: absolute; top: 0px; right: 10px; z-index: 1001; background: none; border: none; font-size: 35px;">
     &times;
-  </button>   
+  </button>
   <form action="/login" method="POST" id="login-form" class="login-form" autocomplete="off" role="main">
     <h1 class="a11y-hidden">Login Form</h1>
     <div>
@@ -156,7 +105,11 @@
         <span class="required">Password</span>
       </label>
     </div>
-    <input type="submit" value="Log In" />
+    <div id="alert-container"></div>
+    <input type="submit" id="submit-button" value="Inciar Sesión" />
+    <div class="spinner-border text-primary" role="status" id="loading-spinner">
+      <span class="visually-hidden">Loading...</span>
+  </div>
     <figure aria-hidden="true">
       <div class="person-body"></div>
       <div class="neck skin"></div>
@@ -171,59 +124,15 @@
     </figure>
   </form>
 </dialog>
-
-  {% if tipo_alerta %}
-  <div id="alerta" class="alert alert-{{ tipo_alerta }} alert-dismissible fade show position-fixed bottom-0 end-0"
-    role="alert" style="width: 20%; bottom: 50px !important;">
-    <div class="d-flex align-items-center justify-content-between">
-      <div>{{ mensaje_alerta }}</div>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  </div>
-  <script>
-    // Ocultar sla alerta después de 5 segundos
-    setTimeout(function () {
-      var alerta = document.getElementById('alerta');
-      alerta.classList.remove('show');
-    }, 5000);
-  </script>
-  {% endif %}
-
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Script para cambiar slides automáticamente -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var interval = setInterval(function () {
-        var currentSlide = document.querySelector('input[name="slide"]:checked');
-        var slides = document.querySelectorAll('input[name="slide"]');
-        var nextSlide = currentSlide.nextElementSibling || slides[0];
-        nextSlide.checked = true;
-      }, 5000); // Cambia de slide cada 5 segundos (5000 milisegundos)
-    });
-  </script>
-<script>
-  // Obtener el diálogo y los botones para abrir y cerrar el popup
-  const popup = document.getElementById('popup');
-  const openButton = document.getElementById('openPopup');
-  const closeButton = document.getElementById('closePopup');
-
-  // Mostrar el popup al hacer clic en el botón de abrir
-  openButton.addEventListener('click', function() {
-    popup.showModal();
-  });
-
-  // Cerrar el popup al hacer clic en el botón de cerrar
-  closeButton.addEventListener('click', function() {
-    popup.close();
-  });
-</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <!-- Font Awesome -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- DataTables JS -->
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>
 </html>
