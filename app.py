@@ -7,7 +7,6 @@ import pyrebase
 import google.generativeai as genai
 
 app = Flask(__name__)
-
 # Configurar la clave secreta de sesión
 app.secret_key = 'tu_clave_secreta_aquí'
 
@@ -470,12 +469,10 @@ def login():
                 if datos_personal_usuario.get('estado', '') == 'Desabilitado':
                     tipo_alerta = 'danger'
                     mensaje_alerta = 'Su Cuenta fue Deshabilitada.'
-                    return render_template('index.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
+                    return jsonify({'mensaje_alerta': 'Su Cuenta fue Deshabilitada.'})
             else:
                 # Si no se encontraron datos del personal para el email, mostrar un error
-                tipo_alerta = 'danger'
-                mensaje_alerta = 'No se encontraron datos del personal para el email proporcionado.'
-                return render_template('index.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
+                return jsonify({'mensaje_alerta': 'Este usuario no existe.'})
 
             # Intentar iniciar sesión con el email y la contraseña proporcionados
             user_cred = auth.sign_in_with_email_and_password(email, password)
@@ -490,7 +487,7 @@ def login():
             session['rol'] = datos_personal_usuario.get('rol', '')
 
             # Redirigir al usuario a la página principal
-            return redirect('/principal')
+            return jsonify({'redirect': '/principal'})
 
         except Exception as e:
             # Manejo de excepciones y mensajes de error
@@ -505,10 +502,10 @@ def login():
             elif "USER_DISABLED" in error_str:
                 mensaje_alerta = 'Cuenta Deshabilitada'
             else:
-                mensaje_alerta = 'Correo o Contraseña es Incorrecta'
+                mensaje_alerta = 'Contraseña Incorrecta'
 
             # Renderizar la plantilla de inicio de sesión con el mensaje de error
-            return render_template('index.html', tipo_alerta=tipo_alerta, mensaje_alerta=mensaje_alerta)
+            return jsonify({'mensaje_alerta': mensaje_alerta})
     
     return render_template('index.html')
 
@@ -519,6 +516,15 @@ def logout():
 
 @app.route('/ia_medic', methods=['GET', 'POST'])
 def iamedic():
+    # Obtener el correo electrónico del usuario autenticado desde la sesión
+    user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
+
+    # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
+    if not user_email:
+        return redirect('/login')
     # Asigna tu clave de API a una variable de entorno
     os.environ['API_KEY'] = 'AIzaSyDNsuMqMk70F73lY_1SQKrKHbXhJn0PLcY'
 
@@ -586,9 +592,9 @@ def iamedic():
             respuesta = ''.join(formatted_lines)
         else:
             respuesta = "Lo siento, esta pregunta no está relacionada con la medicina."
-        return render_template('vistas/ia_medic.html', respuesta=respuesta)
+        return render_template('vistas/ia_medic.html', respuesta=respuesta,user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
     elif request.method == 'GET':
-        return render_template('vistas/ia_medic.html')
+        return render_template('vistas/ia_medic.html',user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
 
 @app.route('/principal')
 def principal():
@@ -672,17 +678,40 @@ def mapas():
     nombre_hospital = session.get('nom_hospital')
     numero_hospital = session.get('n_hospital')
     rol = session.get('rol')
-    tipo_alerta = 'success'
-    mensaje_alerta = 'Paciente editado correctamente'
-    
+
     # Si el usuario no ha iniciado sesión, redirigirlo al inicio de sesión
     if not user_email:
         return redirect('/login')
     
     return render_template('vistas/mapa_pacientes.html', user_email=user_email,nombre_hospital=nombre_hospital,numero_hospital=numero_hospital,rol=rol)
 
-@app.route('/prueba')
-def mapas_prueba():
+@app.route('/reportes')
+def generar_reporte():
+    user_email = session.get('user_email')
+    nombre_hospital = session.get('nom_hospital')
+    numero_hospital = session.get('n_hospital')
+    rol = session.get('rol')
+
+    nombre_paciente = request.form['nombre_paciente']
+    dni = request.form['dni']
+    tratamiento_recomendado = request.form['tratamiento_recomendado']
+    genero = request.form['genero']
+    diagnostico = request.form['diagnostico']
+    observaciones = request.form['observaciones']
+    resultados_examenes = request.form['resultados_examenes']
+    observaciones_adicionales = request.form['observaciones_adicionales']
+    medicamentos_recetados = request.form['medicamentos_recetados']
+    presion_arterial = request.form['presion_arterial']
+    saturacion = request.form['saturacion']
+    temperatura = request.form['temperatura']
+    peso = request.form['peso']
+    frecuencia_respiratoria = request.form['frecuencia_respiratoria']
+    talla = request.form['talla']
+    frecuencia_cardiaca = request.form['frecuencia_cardiaca']
+    imc = request.form['imc']
+    fecha_cita = request.form['fecha_cita']
+    latitud = request.form['latitud']
+    logitud = request.form['logitud']
 
     return render_template('vistas/reportes.html')
 
